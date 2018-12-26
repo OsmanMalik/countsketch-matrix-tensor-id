@@ -11,12 +11,14 @@ function X = generate_dense_tensor(N, I, R, varargin)
 %   Tensors with these properties are e.g. used in the example of Section
 %   5.1 of [2].
 %
-%   X = GENERATE_DENSE_TENSOR(___, Name, Value) specifies optional
-%   parameters using one of more Name, Value pair arguments. Currently,
-%   there is only one optional Name: By providing the Name 'k' and a
-%   corresponding Value, call it k, everything is done in the same way as
-%   before, with the only difference that that r-th lambda entry now equals
-%   exp(-r/k).
+%   X = GENERATE_DENSE_TENSOR(___, 'k', k) returns the same tensor as
+%   above, but with the r-th lambda entry now equal to exp(-r/k).
+%
+%   X = GENERATE_DENSE_TENSOR(___, 'repeat', repeat) returns the same
+%   tensor as above, but with the last repeat columns of each factor matrix
+%   drawn uniformly at random from the first R-repeat columns. Note that we
+%   therefore must have repeat<R. This can be used to create the tensors
+%   used in Section 5.1.1 of [2].
 %   
 % REFERENCES:
 %   [1] B. W. Bader, T. G. Kolda and others. MATLAB Tensor Toolbox 
@@ -31,17 +33,22 @@ function X = generate_dense_tensor(N, I, R, varargin)
 
 params = inputParser;
 addParameter(params, 'k', 2);
+addParameter(params, 'repeat', 0, @(x) isscalar(x) & x < R);
 parse(params, varargin{:});
 
 k = params.Results.k;
+repeat = params.Results.repeat;
 
 %% Create tensor
 
 A = cell(N,1);
+idx = randi(R-repeat, repeat, 1);
 for n = 1:N
-    A{n} = randn(I{n}, R);
+    A{n} = randn(I{n}, R-repeat);
     A{n} = A{n}./sqrt(sum(A{n}.^2, 1));
+    A{n} = [A{n} A{n}(:, idx)];
 end
+
 lambda = exp(-(1:R)/k).';
 X = ktensor(lambda, A);
 
