@@ -5,7 +5,7 @@ function X = generate_dense_tensor(N, I, R, varargin)
 %
 %   X = GENERATE_DENSE_TENSOR(N, I, R) returns an N-way Tensor Toolbox
 %   ktensor, where the n-th factor matrix is created by first creating a
-%   matrix of size I{n} by R with iid standard normal entries, and then 
+%   matrix of size I(n) by R with iid standard normal entries, and then 
 %   normalizing the each column so that each has a 2-norm of 1. The lambda
 %   values of X is a vector of length R with r-th entry equal to exp(-r/2).
 %   Tensors with these properties are e.g. used in the example of Section
@@ -19,6 +19,12 @@ function X = generate_dense_tensor(N, I, R, varargin)
 %   drawn uniformly at random from the first R-repeat columns. Note that we
 %   therefore must have repeat<R. This can be used to create the tensors
 %   used in Section 5.1.1 of [2].
+%
+%   X = GENERATE_DENSE_TENSOR(___, 'lambda_type', str, 'lambda', lambda) 
+%   returns the same tensor as above, but allows us to provide our own
+%   vector containing the lambda values. If str is 'exp', then the standard
+%   exponentially decaying weights from above are used; if str is 'custom',
+%   then the vector lambda is used instead.
 %   
 % REFERENCES:
 %   [1] B. W. Bader, T. G. Kolda and others. MATLAB Tensor Toolbox 
@@ -34,22 +40,34 @@ function X = generate_dense_tensor(N, I, R, varargin)
 params = inputParser;
 addParameter(params, 'k', 2);
 addParameter(params, 'repeat', 0, @(x) isscalar(x) & x < R);
+addParameter(params, 'lambda_type', 'exp')
+addParameter(params, 'lambda', ones(R,1));
 parse(params, varargin{:});
 
 k = params.Results.k;
 repeat = params.Results.repeat;
+lambda_type = params.Results.lambda_type;
+lambda_custom = params.Results.lambda;
 
 %% Create tensor
 
 A = cell(N,1);
 idx = randi(R-repeat, repeat, 1);
 for n = 1:N
-    A{n} = randn(I{n}, R-repeat);
+    A{n} = randn(I(n), R-repeat);
     A{n} = A{n}./sqrt(sum(A{n}.^2, 1));
     A{n} = [A{n} A{n}(:, idx)];
 end
 
-lambda = exp(-(1:R)/k).';
+if strcmp(lambda_type, 'exp')
+    lambda = exp(-(1:R)/k).';
+elseif strcmp(lambda_type, 'custom')
+    if iscolumn(lambda_custom)
+        lambda = lambda_custom;
+    else
+        lambda = lambda_custom.';
+    end
+end
 X = ktensor(lambda, A);
 
 end
