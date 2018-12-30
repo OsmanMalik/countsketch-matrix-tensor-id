@@ -75,15 +75,15 @@ end
 %% Compute deterministic matrix ID
 % This is matrix ID according to [1], implemented in [5]
 
-tic;
+time_srrqr_id_tic = tic;
     [P1, J1] = ID(A', 'rank', k, f);
     P1 = P1';
-time_srrqr_id = toc;
+time_srrqr_id = toc(time_srrqr_id_tic);
 
 %% Compute deterministic matrix ID using Matlab QR
 % This is matrix ID according to [1], but using Matlab QR
 
-tic;
+time_qr_id_tic = tic;
     [Q1b, R1b, e1b] = qr(A, 0);
     T1b = R1b(1:k, 1:k) \ R1b(1:k, k+1:end);
     P1b = [eye(k) T1b];
@@ -91,21 +91,17 @@ tic;
     pvec1b(e1b) = 1:length(e1b);
     P1b = P1b(:, pvec1b);
     J1b = e1b(1:k)';
-time_qr_id = toc;
-
-%% Compute deterministic matrix ID using Matlab QR
-
-
+time_qr_id = toc(time_qr_id_tic);
 
 %% Compute randomized Gaussian matrix ID
 % This is matrix ID according to [3]
 
-tic;
+time_srrqr_gaussian_id_tic = tic;
     G = randn(l, m);
     R = G*A;
     [P2, J2] = ID(R', 'rank', k, f);
     P2 = P2';
-time_srrqr_gaussian_id = toc;
+time_srrqr_gaussian_id = toc(time_srrqr_gaussian_id_tic);
 
 %% Compute randomized SRFT matrix ID
 % This is matrix ID according to [4]. Note that [5] cannot handle complex
@@ -113,66 +109,27 @@ time_srrqr_gaussian_id = toc;
 % a matrix ID using QR with column pivoting here.
 
 Atemp = A;
-tic;
-    %D = sparse(diag((randi(2,m,1)-1)*2-1));
-    %S = sparse(zeros(l, m));
-    %S(:, randsample(m, l)) = eye(l);
-    %Y = S*fft(D*A);
-    
-    % Compute SRFT of A
-    % Done without replacement, which is the same as in [4]
-    %{
-    no_sign_switch = binornd(m, .5);
-    switch_id = randsample(m, no_sign_switch);
-    Atemp(switch_id, :) = -Atemp(switch_id, :);
-    FDA = fft(Atemp);
-    Y = FDA(randsample(m, l), :);
-
-    [Q3, R3, e3] = qr(Y, 0);
-    T3 = R3(1:k, 1:k) \ R3(1:k, k+1:end);
-    P3 = [eye(k) T3];
-    pvec3(e3) = 1:length(e3);
-    P3 = P3(:, pvec3);
-    J3 = e3(1:k)';
-    %}
+time_qr_srft_id_tic = tic;
     [P3, J3] = SRFT_matrix_ID(A, k, l);
-time_qr_srft_id = toc;
+time_qr_srft_id = toc(time_qr_srft_id_tic);
 
 %% Compute randomized CountSketch matrix ID (our proposal)
 
-tic;
-    %{
-    I = eye(l); 
-    %CS = sparse(I(:, randi(l, m, 1))) * sparse(diag((randi(2,m,1)-1)*2-1));
-    randvec = [randsample(l,l); randi(l, m-l, 1)];
-    randvec = randvec(randperm(length(randvec)));
-    CS = sparse(I(:, randvec)) * sparse(diag((randi(2,m,1)-1)*2-1));
-    Z = CS*A;
-    [P4, J4] = ID(Z', 'rank', k, f);
-    P4 = P4';
-    %}
+time_srrqr_cs_id_tic = tic;
     [P4, J4] = CS_matrix_ID(A, k, l, 'srrqr');
-time_srrqr_cs_id = toc;
+time_srrqr_cs_id = toc(time_srrqr_cs_id_tic);
     
 %% Compute randomized CountSketch matrix ID using Matlab QR (our proposal)
 
-tic;
-    %{
-    [Q5, R5, e5] = qr(Z, 0);
-    T5 = R5(1:k, 1:k) \ R5(1:k, k+1:end);
-    P5 = [eye(k) T5];
-    pvec5(e5) = 1:length(e5);
-    P5 = P5(:, pvec5);
-    J5 = e5(1:k)';
-    %}
+time_qr_cs_id_tic = tic;
     [P5, J5] = CS_matrix_ID(A, k, l, 'qr');
-time_qr_cs_id = toc
+time_qr_cs_id = toc(time_qr_cs_id_tic);
 
 %% Do SVD for comparison
 
-tic;
+time_svd_tic = tic;
     [U5, S5, V5] = svd(A);
-time_svd = toc;
+time_svd = toc(time_svd_tic);
 
 %% Print comparison of results
 
