@@ -42,14 +42,14 @@
 
 %% Settings 
 
-m = 2000;
-n = 2000;
+m = 1000;
+n = 1000;
 k = 200; % Numerical rank of matrix
 l = k+8; % Oversampled l > k
-noise_level = 1e-5;
+noise_level = 1e-3;
 f = 2;
 matrix_type = 3;
-mn = 8;
+mn = 12;
 
 %% Generate test matrix
 
@@ -92,6 +92,13 @@ time_qr_id_tic = tic;
     P1b = P1b(:, pvec1b);
     J1b = e1b(1:k)';
 time_qr_id = toc(time_qr_id_tic);
+
+%% Compute deterministic gram matrix ID using Matlab QR
+% This is the gram matrix ID as discussed in [TBA]
+
+time_gram_id_tic = tic;
+    [P_gram, J_gram] = gram_matrix_ID(A, k);
+time_gram_id_toc = toc(time_gram_id_tic);
 
 %% Compute randomized Gaussian matrix ID
 % This is matrix ID according to [3]
@@ -136,6 +143,7 @@ time_svd = toc(time_svd_tic);
 fprintf('Error for rank %d SVD: %.10e. Time %.2f s.\n', k, S5(k+1, k+1), time_svd)
 fprintf('Error for rank %d matrix ID [SRRQR]: %.10e. Time %.2f s.\n', k, norm(A - A(:,J1)*P1), time_srrqr_id)
 fprintf('Error for rank %d matrix ID [Matlab QR]: %.10e. Time %.2f s.\n', k, norm(A - A(:,J1b)*P1b), time_qr_id)
+fprintf('Error for rank %d gram matrix ID [Matlab QR]: %.10e. Time %.2f s.\n', k, norm(A - A(:,J_gram)*P_gram), time_gram_id_toc)
 fprintf('Error for rank %d matrix random Gaussian ID [SRRQR]: %.10e. Time %.2f s.\n', k, norm(A - A(:,J2)*P2), time_srrqr_gaussian_id)
 fprintf('Error for rank %d matrix random SRFT ID [Matlab QR]: %.10e. Time %.2f s.\n', k, norm(A - A(:,J3)*P3), time_qr_srft_id)
 fprintf('Error for rank %d matrix random CountSketch ID [SRRQR]: %.10e. Time %.2f s.\n', k, norm(A - A(:,J4)*P4), time_srrqr_cs_id)

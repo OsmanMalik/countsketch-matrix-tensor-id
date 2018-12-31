@@ -5,17 +5,23 @@
 
 %% Settings
 
-N = 20;
-I = 8000*ones(1, N);
-R = 8000;
+N = 10;
+I = 1000*ones(1, N);
+R = 500;
 k = R/2;
 l = k + 10;
-small_val = 1e-5;
+small_val = 1e-15;
 lambda = [ones(1, R/2) small_val*ones(1, R/2)];
 
 %% Generate test tensor
 
 X = generate_dense_tensor(N, I, R, 'lambda_type', 'custom', 'lambda', lambda);
+
+%% Compute gram tensor ID
+
+gram_tic = tic;
+Xk_gram = gram_tensor_ID(X, k);
+gram_toc = toc(gram_tic);
 
 %% Compute Gaussian tensor ID
 
@@ -31,5 +37,6 @@ CS_toc = toc(CS_tic);
 
 %% Print comparison of results
 
+fprintf('Time for gram tensor ID: %.2f s.\n', gram_toc);
 fprintf('Time for Gaussian tensor ID: %.2f s.\n', gaussian_toc);
 fprintf('Time for CountSketched tensor ID: %.2f s.\n', CS_toc);
