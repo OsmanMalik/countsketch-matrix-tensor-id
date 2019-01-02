@@ -1,4 +1,4 @@
-function A = generate_dense_matrix(n, k, mn)
+function A = generate_dense_matrix(m, n, k, mn)
 %GENERATE_DENSE_MATRIX Generate dense matrix of certain numerical rank
 %  
 %   A = GENERATE_DENSE_MATRIX(n, k, mn) returns a randomly generated dense
@@ -10,7 +10,7 @@ function A = generate_dense_matrix(n, k, mn)
 
 % Construct S, U and V
 S = sparse(1:2*k, 1:2*k, 10.^[-((0:k-1)/k)*mn repmat(-mn,1,k)]);
-[U, ~] = qr(randn(n, 2*k), 0);
+[U, ~] = qr(randn(m, 2*k), 0);
 [V, ~] = qr(randn(n, 2*k), 0);
 
 % Compute A
