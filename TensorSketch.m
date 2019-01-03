@@ -6,7 +6,9 @@ function SA = TensorSketch(A, h, s, J)
 %   functions in h and s, using a target sketch dimension J. A should be a 
 %   (row or column) cell containing the matrices, h should be a (row or 
 %   column) cell containing hash functions, and s should be a (row or 
-%   column) cell containing sign hash functions.
+%   column) cell containing sign hash functions. The matrices in A can be
+%   either dense or sparse: The appropriate countSketch function will be
+%   used in each case.
 
 %% Include relevant files
 
@@ -20,7 +22,11 @@ Acs = cell(size(A)); % To store CountSketch of each matrix in A. FFT and transpo
 P = ones(J, R);
 
 for n = 1:N
-    Acs{n} = fft(countSketch(A{n}.', int64(h{n}), J, s{n}, 1).');
+    if issparse(A{n})
+        Acs{n} = fft(countSketch_sparse(A{n}.', int64(h{n}), J, s{n}).');
+    else
+        Acs{n} = fft(countSketch(A{n}.', int64(h{n}), J, s{n}, 1).');
+    end
     P = P.*Acs{n};
 end
 
