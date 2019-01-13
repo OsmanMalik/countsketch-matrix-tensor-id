@@ -18,7 +18,7 @@ function [P, J] = SRFT_matrix_ID(A, k, l)
 no_sign_switch = binornd(m, .5);
 switch_id = randsample(m, no_sign_switch);
 A(switch_id, :) = -A(switch_id, :);
-FDA = fft(A);
+FDA = fft(full(A));
 Y = FDA(randsample(m, l), :);
 
 % Construct matrix ID of Y
