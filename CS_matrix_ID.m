@@ -20,6 +20,20 @@ function [P, J] = CS_matrix_ID(A, k, l, QR_type)
 
 [m, ~] = size(A);
 
+% Define hash function
+h = [1:l randi(l, 1, m-l)].';
+h = h(randperm(m));
+s = randi(2, m, 1)*2-3;
+
+% Compute CountSketch of A
+if issparse(A)
+    Z = countSketch_sparse(A.', int64(h), l, s).';
+else
+    Z = countSketch(A.', int64(h), l, s, 1).';
+end
+
+% Old code
+%{
 % Switch signs of some rows of A
 no_sign_switch = binornd(m, .5);
 switch_id = randsample(m, no_sign_switch);
@@ -30,6 +44,7 @@ randvec = [randsample(l,l); randi(l, m-l, 1)];
 randvec = randvec(randperm(m));
 CS = sparse(randvec, 1:m, ones(m,1), l, m);
 Z = CS*A;
+%}
 
 % Proceed by using appropriate QR factorization
 if strcmp(QR_type, 'srrqr')
