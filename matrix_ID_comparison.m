@@ -42,10 +42,10 @@
 
 %% Settings 
 
-m = 1000;
-n = 1000;
-k = 200; % Numerical rank of matrix
-l = k+8; % Oversampled l > k
+m = 8000;
+n = 20;
+k = 10; % Numerical rank of matrix
+l = k+5; % Oversampled l > k
 noise_level = 1e-3;
 f = 2;
 matrix_type = 3;
@@ -67,7 +67,7 @@ if matrix_type == 1
 elseif matrix_type == 2
     A = full(sprand(m, n, .01));
 elseif matrix_type == 3
-    A = generate_dense_matrix(n, k, mn);
+    A = generate_dense_matrix(m, n, k, mn);
 elseif matrix_type == 4
     A = sprand(m, n, .01);
 end
@@ -135,7 +135,7 @@ time_qr_cs_id = toc(time_qr_cs_id_tic);
 %% Do SVD for comparison
 
 time_svd_tic = tic;
-    [U5, S5, V5] = svd(A);
+    [U5, S5, V5] = svd(A, 'econ');
 time_svd = toc(time_svd_tic);
 
 %% Print comparison of results
