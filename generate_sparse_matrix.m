@@ -3,10 +3,10 @@ function A = generate_sparse_matrix(n, k, mn, s1, s2)
 %
 %   A = GENERATE_SPARSE_MATRIX(n, k, mn, s1, s2) returns a randomly generated
 %   sparse matrix A of size n by n and of rank 2k. The 2-norm of A is 1,
-%   and the smallest positive singular value is 10^(-mn). The sparsity of A
-%   is nnz(A) = 2*k*s1*s2. This code constructs the matrix A via 
-%   A = U*S*V.' The variable s1 controls number of nonzero elements in each
-%   column of U, and s2 does the same for V.
+%   and the smallest positive singular value is 10^(-mn). The variable s1 
+%   controls number of nonzero elements in each column of U, and s2 does
+%   the same for V. The sparsity of A is nnz(A) = 2*k*s1*s2. This code 
+%   constructs the matrix A via A = U*S*V.' 
 
 if n < 2*k*max(s1, s2)
     error('Must have n >= 2*k*max(s1, s2)')
