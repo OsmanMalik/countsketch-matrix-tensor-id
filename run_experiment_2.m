@@ -178,26 +178,26 @@ for i = 1:length(Is)
         X = X./sqrt(sum(X.^2,1));
         AX = A*X;
         if I <= I_mem_lim
-            error_SID = max(sqrt(sum((AX - A(:,J_SID)*(P_SID*X)).^2, 1)));
+            error_SID = max(sqrt(sum(abs(AX - A(:,J_SID)*(P_SID*X)).^2, 1)));
             if verbosity >= 1
                 fprintf('RSVDPACK matrix ID error: %.10e. Time: %.2f s.\n', error_SID, time_SID);
             end
         else
             error_SID = nan;
         end
-        error_GA = max(sqrt(sum((AX - A(:,J_GA)*(P_GA*X)).^2, 1)));
+        error_GA = max(sqrt(sum(abs(AX - A(:,J_GA)*(P_GA*X)).^2, 1)));
         if verbosity >= 1
             fprintf('Gaussian matrix ID error: %.10e. Time: %.2f s.\n', error_GA, toc_gaussian);    
         end
         if I <= I_mem_lim
-            error_SRFT = max(sqrt(sum((AX - A(:,J_SRFT)*(P_SRFT*X)).^2, 1)));
+            error_SRFT = max(sqrt(sum(abs(AX - A(:,J_SRFT)*(P_SRFT*X)).^2, 1)));
             if verbosity >= 1
                 fprintf('SRFT matrix ID error: %.10e. Time: %.2f s.\n', error_SRFT, toc_SRFT);
             end
         else
             error_SRFT = nan;
         end
-        error_CS = max(sqrt(sum((AX - A(:,J_CS)*(P_CS*X)).^2, 1)));
+        error_CS = max(sqrt(sum(abs(AX - A(:,J_CS)*(P_CS*X)).^2, 1)));
         if verbosity >= 1
             fprintf('CountSketch matrix ID error: %.10e. Time: %.2f s.\n', error_CS, toc_CS);
         end
