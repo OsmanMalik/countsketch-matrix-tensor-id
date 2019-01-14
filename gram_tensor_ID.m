@@ -37,7 +37,7 @@ Pc = Id(:, p);
 J = p(1:k).';
 
 % Compute unpivoted QR of Gc'*Pc
-[~, Rt] = qr(G(:,J)'*Pc, 0);
+[~, Rt] = qr(G(:,J).'*Pc, 0);
 
 % Compute S
 S = Rt(1:k, 1:k) \ Rt(1:k, k+1:end);
