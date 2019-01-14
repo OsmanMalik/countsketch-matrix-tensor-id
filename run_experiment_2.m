@@ -59,10 +59,8 @@
 
 %% Settings
 
-%Is = [10*1e+3 25*1e+3 50*1e+3 100*1e+3 250*1e+3 500*1e+3 1e+6];
-%I_mem_lim = 100*1e+3;
-Is = [1e+4 2*1e+4 3*1e+4 4*1e+4];
-I_mem_lim = 0;
+Is = [10*1e+3 25*1e+3 50*1e+3 100*1e+3 250*1e+3 500*1e+3 1e+6];
+I_mem_lim = 100*1e+3;
 
 R = 10*1e+3;
 K = 1e+3;
@@ -70,7 +68,7 @@ L = K + 10;
 rho = 0.01;
 mn = 8;
 no_rand_norm_vec = 18;
-no_trials = 4;
+no_trials = 10;
 bin_file = 'data/A_mat.bin';
 results_matlab_file = 'matlab_output';
 verbosity = 1;
