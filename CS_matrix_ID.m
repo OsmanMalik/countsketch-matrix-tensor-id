@@ -18,6 +18,7 @@ function [P, J] = CS_matrix_ID(A, k, l, QR_type)
 %   [2] X. Xing. Interpolative Decomposition based on Strong RRQR. MATLAB
 %       Central File Exchange. Retrieved November 23, 2018.
 
+addpath('help_functions');
 [m, ~] = size(A);
 
 % Define hash function
