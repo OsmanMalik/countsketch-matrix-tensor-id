@@ -59,8 +59,10 @@
 
 %% Settings
 
-Is = [10*1e+3 25*1e+3 50*1e+3 100*1e+3 250*1e+3 500*1e+3 1e+6];
-I_mem_lim = 100*1e+3;
+%Is = [10*1e+3 25*1e+3 50*1e+3 100*1e+3 250*1e+3 500*1e+3 1e+6];
+Is = [100*1e+3 250*1e+3 500*1e+3 1e+6];
+I_mem_lim_SID = 25e+3;
+I_mem_lim_SRFT = 100e+3;
 
 R = 10*1e+3;
 K = 1e+3;
@@ -81,7 +83,7 @@ save_mat.I = zeros(1, length(Is)*no_trials);
 save_mat.trial = zeros(1, length(Is)*no_trials);
 save_mat.time = zeros(4, length(Is)*no_trials);
 save_mat.error = zeros(4, length(Is)*no_trials);
-cnt = 1;
+cnt = 31;
 
 fprintf('Starting Experiment 2...\n');
 
@@ -107,7 +109,7 @@ for i = 1:length(Is)
         end
 
         % Save matrix A to file
-        if I <= I_mem_lim
+        if I <= I_mem_lim_SID
             if verbosity >= 1
                 fprintf('Saving matrix to file...\n');
             end
@@ -120,7 +122,7 @@ for i = 1:length(Is)
         end
 
         % Compute matrix ID (RSVDPACK)
-        if I <= I_mem_lim
+        if I <= I_mem_lim_SID
             if verbosity >= 1
                 fprintf('Running RSVDPACK matrix ID... ');
             end
@@ -144,7 +146,7 @@ for i = 1:length(Is)
         end
 
         % Compute SRFT matrix ID
-        if I <= I_mem_lim
+        if I <= I_mem_lim_SRFT
             if verbosity >= 1
                 fprintf('Running SRFT matrix ID... ');
             end
@@ -177,7 +179,7 @@ for i = 1:length(Is)
         X = randn(R, no_rand_norm_vec);
         X = X./sqrt(sum(X.^2,1));
         AX = A*X;
-        if I <= I_mem_lim
+        if I <= I_mem_lim_SID
             error_SID = max(sqrt(sum(abs(AX - A(:,J_SID)*(P_SID*X)).^2, 1)));
             if verbosity >= 1
                 fprintf('RSVDPACK matrix ID error: %.10e. Time: %.2f s.\n', error_SID, time_SID);
@@ -189,7 +191,7 @@ for i = 1:length(Is)
         if verbosity >= 1
             fprintf('Gaussian matrix ID error: %.10e. Time: %.2f s.\n', error_GA, toc_gaussian);    
         end
-        if I <= I_mem_lim
+        if I <= I_mem_lim_SRFT
             error_SRFT = max(sqrt(sum(abs(AX - A(:,J_SRFT)*(P_SRFT*X)).^2, 1)));
             if verbosity >= 1
                 fprintf('SRFT matrix ID error: %.10e. Time: %.2f s.\n', error_SRFT, toc_SRFT);
