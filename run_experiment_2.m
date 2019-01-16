@@ -58,9 +58,33 @@
 %           Harmon. Anal. 25, pp. 335-366, 2008.
 
 %% Settings
+% Is: The different number of rows that will be used in this experiment.
+% I_mem_lim_SID: This is a size limit on the number of rows beyond which
+%   RSVDPACK matrix ID will not be run.
+% I_mem_lim_SRFT: This is a size limit on the number of rows beyond which
+%   SRFT matrix ID will nog be run.
+% R: The number of columns to use for the input matrix.
+% K: The target rank in the decomposition.
+% L: This is K + oversampling parameter.
+% rho: This is the target number of nonzero elements in the input matrix A.
+% mn: Controls the size of the smallest singular value; see
+%   generate_sparse_matrix_4 for details.
+% SRFT_no_splits: Controls how the input matrix is split into pieces in the
+%   execution of SRFT_matrix_ID. This helps avoid exceeding memory usage in
+%   that algorithm when dealing with sparse matrices.
+% no_rand_norm_vec: The number of random vectors used in the computation of
+%   the randomized 2-norm.
+% no_trials: The number of times each experiment is repeated.
+% bin_file: This is the file where the matrix A is stored for input into C
+%   functions
+% results_matlab_file: This is the name of the mat file where the results
+%   are stored
+% verbosity: Controls the verbosity (0 = least verbose, 1 = intermediate 
+%   verbosity, 2 = max verbosity)
+% cnt: Used to control where in the results_matlab_file the results are
+%   stored; see the main loop below for details.
 
 Is = [10*1e+3 25*1e+3 50*1e+3 100*1e+3 250*1e+3 500*1e+3 1e+6];
-%Is = [100*1e+3 250*1e+3 500*1e+3 1e+6];
 I_mem_lim_SID = 25e+3;
 I_mem_lim_SRFT = 1e+6;
 
