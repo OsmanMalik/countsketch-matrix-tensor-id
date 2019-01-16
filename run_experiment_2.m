@@ -59,21 +59,23 @@
 
 %% Settings
 
-%Is = [10*1e+3 25*1e+3 50*1e+3 100*1e+3 250*1e+3 500*1e+3 1e+6];
-Is = [100*1e+3 250*1e+3 500*1e+3 1e+6];
+Is = [10*1e+3 25*1e+3 50*1e+3 100*1e+3 250*1e+3 500*1e+3 1e+6];
+%Is = [100*1e+3 250*1e+3 500*1e+3 1e+6];
 I_mem_lim_SID = 25e+3;
-I_mem_lim_SRFT = 50e+3;
+I_mem_lim_SRFT = 1e+6;
 
 R = 10*1e+3;
 K = 1e+3;
 L = K + 10;
-rho = 0.01;
+rho = 5e-3; % rho = 0.01 in experiment 2, rho = 5e-3 in experiment 3
 mn = 8;
+SRFT_no_splits = [1 1 1 100 250 500 1000];
 no_rand_norm_vec = 18;
 no_trials = 10;
 bin_file = 'data/A_mat.bin';
 results_matlab_file = 'matlab_output';
 verbosity = 1;
+cnt = 1;
 
 %% Main loop
 
@@ -83,7 +85,6 @@ save_mat.I = zeros(1, length(Is)*no_trials);
 save_mat.trial = zeros(1, length(Is)*no_trials);
 save_mat.time = zeros(4, length(Is)*no_trials);
 save_mat.error = zeros(4, length(Is)*no_trials);
-cnt = 31;
 
 fprintf('Starting Experiment 2...\n');
 
@@ -151,7 +152,7 @@ for i = 1:length(Is)
                 fprintf('Running SRFT matrix ID... ');
             end
             tic_SRFT = tic;
-            [P_SRFT, J_SRFT] = SRFT_matrix_ID(full(A), K, L);
+            [P_SRFT, J_SRFT] = SRFT_matrix_ID(A, K, L, 'splits', SRFT_no_splits(i));
             toc_SRFT = toc(tic_SRFT);
             if verbosity >= 1
                 fprintf('Done!\n');
