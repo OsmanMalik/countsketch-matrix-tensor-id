@@ -53,10 +53,11 @@ matrix_type = 6;
 mn = 8;
 n_dens = .01;
 n_mag = 1e-10;
-rho = sqrt(.01/(2*k)); % Should be sqrt((prop. nonzeros)/(2*k))
+rho = sqrt(5e-3/(2*k)); % Should be sqrt((prop. nonzeros)/(2*k))
 norm_type = 'fro';
+SRFT_no_splits = 1000;
 compute_gram_matrix = false;
-compute_SRFT_matrix = false;
+compute_SRFT_matrix = true;
 
 
 %% Generate test matrix
@@ -146,7 +147,7 @@ time_srrqr_gaussian_id = toc(time_srrqr_gaussian_id_tic);
 
 if compute_SRFT_matrix
     time_qr_srft_id_tic = tic;
-        [P3, J3] = SRFT_matrix_ID(A, k, l);
+        [P3, J3] = SRFT_matrix_ID(A, k, l, 'splits', SRFT_no_splits);
     time_qr_srft_id = toc(time_qr_srft_id_tic);
 else
     time_qr_srft_id = nan;
@@ -196,18 +197,23 @@ else
     error_gram_id_toc = nan;
 end
 
+
+QQ = randn(n, 10);
+QQ = QQ./sqrt(sum(QQ.^2,1));
+AQQ = A*QQ;
+
 if compute_SRFT_matrix
-    error_qr_srft_id = norm(A - A(:,J3)*P3, norm_type);
+    %error_qr_srft_id = norm(A - A(:,J3)*P3, norm_type);
+    error_qr_srft_id = max(sqrt(sum((AQQ - A(:,J3)*(P3*QQ)).^2, 1)));
 else
     error_qr_srft_id = nan;
 end
 
-QQ = randn(n, 10);
-QQ = QQ./sqrt(sum(QQ.^2,1));
 
-error_srrqr_gaussian_id = max(sqrt(sum((A*QQ - A(:,J2)*(P2*QQ)).^2, 1)));
-error_srrqr_cs_id = max(sqrt(sum((A*QQ - A(:,J4)*(P4*QQ)).^2, 1)));
-error_qr_cs_id = max(sqrt(sum((A*QQ - A(:,J5)*(P5*QQ)).^2, 1))); 
+
+error_srrqr_gaussian_id = max(sqrt(sum((AQQ - A(:,J2)*(P2*QQ)).^2, 1)));
+error_srrqr_cs_id = max(sqrt(sum((AQQ - A(:,J4)*(P4*QQ)).^2, 1)));
+error_qr_cs_id = max(sqrt(sum((AQQ - A(:,J5)*(P5*QQ)).^2, 1))); 
 
 fprintf('Error for rank %d SVD: %.10e. Time %.2f s.\n', k, error_svd, time_svd)
 fprintf('Error for rank %d matrix ID [SRRQR]: %.10e. Time %.2f s.\n', k, error_srrqr_id, time_srrqr_id)
