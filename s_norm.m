@@ -28,10 +28,12 @@ function nrm = s_norm(X, tol, varargin)
 params = inputParser;
 addParameter(params, 'verbosity', 0);
 addParameter(params, 'init', '1')
+addParameter(params, 'maxit', 1000)
 parse(params, varargin{:});
 
 verbosity = params.Results.verbosity;
 init = params.Results.init;
+maxit = params.Results.maxit;
 
 %% Get relevant tensor properties
 
@@ -61,10 +63,8 @@ end
 
 %% Main loop: Run until convergence 
 
-it = 0;
-lambda_old = lambda;
 Ns = 1:N;
-while it == 0 || abs(lambda_old - lambda) >= tol
+for it = 1:maxit
     lambda_old = lambda;
     for n = 1:N-1
         A{n} = X.U{n} * (X.lambda.*prod(ip(:, Ns~=n), 2));
@@ -72,9 +72,11 @@ while it == 0 || abs(lambda_old - lambda) >= tol
         A{n} = A{n} / lambda;
         ip(:, n) = X.U{n}.'*A{n};
     end
-    it = it + 1;
     if verbosity > 1
         fprintf('Finished iteration %d. Current lambda is %.6e.\n', it, lambda);
+    end
+    if abs(lambda_old - lambda) < tol
+        break
     end
 end
 nrm = lambda;
