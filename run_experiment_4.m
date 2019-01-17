@@ -2,7 +2,7 @@
 
 %% Settings
 
-N = 10;
+N = 5;
 %Is = [10*1e+3 25*1e+3 50*1e+3 100*1e+3 250*1e+3 500*1e+3 1e+6];
 %Is = [1e+3 2e+3];
 Is = [1e+3 2.5e+3 5e+3 1e+4 2.5e+4 5e+4 1e+5 2.5e+5];
@@ -10,9 +10,9 @@ K = 1e+3;
 L = K + 10;
 mn = 8;
 no_trials = 10;
-lambda = 10.^(-((0:2*K-1)/(2*K))*mn);
-fac_mat_dens = .05;
-s_norm_tol = 1e-6;
+lambda = 10.^(-((0:10*K-1)/(10*K))*mn);
+fac_mat_dens = .01;
+s_norm_tol = 1e-12;
 maxit = 1000;
 results_matlab_file = 'matlab_output_exp_4';
 verbosity = 1;
