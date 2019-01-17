@@ -10,7 +10,8 @@ K = 1e+3;
 L = K + 10;
 mn = 8;
 no_trials = 10;
-lambda = 10.^(-((0:10*K-1)/(10*K))*mn);
+K_mult = 10;
+lambda = 10.^(-((0:K_mult*K-1)/(K_mult*K))*mn);
 fac_mat_dens = .01;
 s_norm_tol = 1e-12;
 maxit = 1000;
@@ -41,7 +42,7 @@ for i = 1:length(Is)
         if verbosity >= 1
             fprintf('Generating sparse tensor... ');
         end
-        X = generate_tensor(N, I, 2*K, 'lambda_type', 'custom', 'lambda', lambda, 'density', fac_mat_dens);
+        X = generate_tensor(N, I, K_mult*K, 'lambda_type', 'custom', 'lambda', lambda, 'density', fac_mat_dens);
         if verbosity >= 1
             fprintf('Done!\n')
         end
