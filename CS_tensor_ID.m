@@ -15,6 +15,7 @@ function Xk = CS_tensor_ID(X, k, l, QR_type)
 
 % Get dimensions of X
 N = ndims(X);
+R = ncomponents(X);
 
 % Define hash functions
 h = cell(N, 1);
@@ -26,7 +27,9 @@ end
 
 % Compute TensorSketch of matrix corresponding to X
 A = X.U;
-A{1} = repmat(X.lambda.', size(A{1}, 1), 1) .* A{1};
+
+A{1} = A{1}*sparse(1:R, 1:R, X.lambda, R, R);
+%A{1} = repmat(X.lambda.', size(A{1}, 1), 1) .* A{1};
 Z = TensorSketch(A, h, s, l);
 
 % Proceed by using appropriate QR factorization
