@@ -63,9 +63,14 @@ for n = 1:N
     if density == 1
         A{n} = randn(I(n), R-repeat);
     else
-        for r = 1:R-repeat
-            A{n}(:, r) = sprand(I(n), 1, density);
-        end
+        t = ceil(I(n)*density);
+        rid = randi(I(n), t*R, 1);
+        cid = repelem((1:R).', t, 1);
+        val = randn(t*R, 1); 
+        A{n} = sparse(rid, cid, val, I(n), R);
+        %for r = 1:R-repeat
+        %    A{n}(:, r) = sprand(I(n), 1, density);
+        %end
     end
     A{n} = A{n}./sqrt(sum(A{n}.^2, 1));
     A{n} = [A{n} A{n}(:, idx)];
