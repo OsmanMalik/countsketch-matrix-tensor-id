@@ -51,7 +51,8 @@ B = cell(N, 1);
 for n = 1:N
     B{n} = X.U{n}(:, J);
 end
-alpha = P*X.lambda;
+%alpha = P*X.lambda;
+alpha = X.lambda(J).*sum(P, 2);
 Xk = ktensor(alpha, B);
 
 end
