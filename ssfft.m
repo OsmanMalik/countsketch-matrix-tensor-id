@@ -1,7 +1,5 @@
 function SFA = ssfft(A, l, S)
 %SSFFT Computes subsampled FFT.
-%
-%   SFM = ssfft()
 
 [no_row, no_col] = size(A);
 n = no_col;
