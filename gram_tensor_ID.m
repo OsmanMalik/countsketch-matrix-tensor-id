@@ -50,7 +50,8 @@ A = cell(N, 1);
 for n = 1:N
     A{n} = X.U{n}(:, J);
 end
-alpha = P*X.lambda;
+%alpha = P*X.lambda;
+alpha = X.lambda(J).*sum(P, 2);
 Xk = ktensor(alpha, A);
 
 end
