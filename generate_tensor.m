@@ -64,10 +64,10 @@ for n = 1:N
         A{n} = randn(I(n), R-repeat);
     else
         t = ceil(I(n)*density);
-        rid = randi(I(n), t*R, 1);
-        cid = repelem((1:R).', t, 1);
-        val = randn(t*R, 1); 
-        A{n} = sparse(rid, cid, val, I(n), R);
+        rid = randi(I(n), t*(R-repeat), 1);
+        cid = repelem((1:R-repeat).', t, 1);
+        val = randn(t*(R-repeat), 1); 
+        A{n} = sparse(rid, cid, val, I(n), R-repeat);
         %for r = 1:R-repeat
         %    A{n}(:, r) = sprand(I(n), 1, density);
         %end
