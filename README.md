@@ -25,6 +25,7 @@ The four script files **run_experiment_n.m** (where n = 1, 2, 3, 4), can be used
 	<img src="plot-experiment-2b-error.png" width="60%">
 	<img src="plot-experiment-2b-time.png" width="60%">
 </p>
+
 * **Experiment 3:** This experiment compares Gaussian matrix ID, SRFT matrix ID, and our proposed CountSketch matrix ID (with column pivoted QR). The decomposed matrix is a real-world matrix. In our paper, we use the matrix *specular* matrix, which is available at https://sparse.tamu.edu/Brogan/specular. The table below shows results from this experiment that are included in our paper.
 
 | Algorithm | Error | Run time (s) |
