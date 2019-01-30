@@ -1,44 +1,55 @@
-%MATRIX_ID_COMPARISON   A comparison between three different matrix ID
-%                       algorithms.
+% MATRIX_ID_COMPARISON A comparison between four different matrix ID
+%                      algorithms [WORK IN PROGRESS]
 %
-%   The purpose of this script is to compare three versions of matrix ID:
-%       1. Deterministic, according to [1];
-%       2. Randomized using a Gaussian random matrix, according to [3];
+%   The purpose of this script is to compare four versions of matrix ID:
+%       1. Deterministic, according to [Ch05];
+%       2. Randomized using a Gaussian random matrix, according to [Ma11];
 %       3. Randomized using subsampled randomized Fourier transform (SRFT),
-%           according to [4];
+%           according to [Wo08];
 %       4. Randomized using CountSketch (our proposal).
 %
 %   The deterministic matrix ID, which is used for 1, and as a component in
-%   2, 3 and 4, uses the method described in [1], which incorporates the
-%   strong rank-revealing QR (SRRQR) factorization of [2]. We use the 
-%   implementation [5] of SRRQR based matrix ID.
+%   2, 3 and 4, uses the method described in [Ch05], which incorporates the
+%   strong rank-revealing QR (SRRQR) factorization of [Gu96]. We use the 
+%   implementation [Xi18] of SRRQR based matrix ID.
 %
 % NOTES:
-%   1.  The practical algorithm suggested in Theorem 2 of [1] corresponds to
-%       choosing f = sqrt(n) in [2], where n is the number of columns of A,
-%       the matrix to be decomposed.
+%   1.  The practical algorithm suggested in Theorem 2 of [Ch05]
+%       corresponds to choosing f = sqrt(n) in [Gu96], where n is the
+%       number of columns of A, the matrix to be decomposed.
 %   2.  I think the practical algorithm for computing matrix ID of the
-%       product G*A, where G is Gaussian, in [3] uses f = 2 in [2].
+%       product G*A, where G is Gaussian, in [Ma11] uses f = 2 in [Gu96].
+%   3.  This script is a work in progress, and is a bit messy at the
+%       moment. I expect to clean it up at a later date.
 %
 % REFERENCES:
-%   [1] H. Cheng, Z. Gimbutas, P. G. Martinsson, and V. Rokhlin. On the
-%       compression of low rank matrices. SIAM J. Sci. Comput. 26(4), pp.
-%       1389-1404, 2005.
 %
-%   [2] M. Gu, and S. C. Eisenstat. Efficient algorithms for computing a
-%       strong rank-revealing QR factorization. SIAM J. Sci. Comput. 17(1),
-%       pp. 848-869, 1996.
+%   [Bi15]  D. J. Biagioni, D. Beylkin, G. Beylkin. Randomized 
+%           interpolative decomposition of separated representations. J. 
+%           Comput. Phys. 281, pp. 116-134, 2015.
 %
-%   [3] P. G. Martinsson, V. Rokhlin, M. Tygert. A randomized algorithm for
-%       the decomposition of matrices. Appl. Comput. Harmon. Anal. 30, pp.
-%       47-68, 2011.
+%   [Ch05]  H. Cheng, Z. Gimbutas, P. G. Martinsson, and V. Rokhlin. On the
+%           compression of low rank matrices. SIAM J. Sci. Comput. 26(4),
+%           pp. 1389-1404, 2005.
 %
-%   [4] F. Woolfe, E. Liberty, V. Rokhlin, M. Tygert. A fast randomized
-%       algorithm for the approximation of matrices. Appl. Comput. Harmon.
-%       Anal. 25, pp. 335-366, 2008.
+%   [Gu96]  M. Gu, and S. C. Eisenstat. Efficient algorithms for computing
+%           a strong rank-revealing QR factorization. SIAM J. Sci. Comput.
+%           17(1), pp. 848-869, 1996.
+%
+%   [Ma11]  P. G. Martinsson, V. Rokhlin, M. Tygert. A randomized algorithm
+%           for the decomposition of matrices. Appl. Comput. Harmon. Anal.
+%           30, pp. 47-68, 2011.
+%
+%   [Wo08]  F. Woolfe, E. Liberty, V. Rokhlin, M. Tygert. A fast randomized
+%           algorithm for the approximation of matrices. Appl. Comput.
+%           Harmon. Anal. 25, pp. 335-366, 2008.
 %   
-%   [5] X. Xing. Interpolative Decomposition based on Strong RRQR. MATLAB
-%       Central File Exchange. Retrieved November 23, 2018.
+%   [Xi18]  X. Xing. Interpolative Decomposition based on Strong RRQR.
+%           MATLAB Central File Exchange. Retrieved November 23, 2018.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 %% Settings 
 
@@ -87,7 +98,7 @@ elseif matrix_type == 6
 end
 
 %% Compute deterministic matrix ID
-% This is matrix ID according to [1], implemented in [5]
+% This is matrix ID according to [Ch05], implemented in [Xi18]
 
 if issparse(A)
     time_srrqr_id = nan;
@@ -99,7 +110,7 @@ else
 end
 
 %% Compute deterministic matrix ID using Matlab QR
-% This is matrix ID according to [1], but using Matlab QR
+% This is matrix ID according to [Ch05], but using Matlab QR
 
 if issparse(A)
     time_qr_id = nan;
@@ -116,7 +127,7 @@ else
 end
 
 %% Compute deterministic gram matrix ID using Matlab QR
-% This is the gram matrix ID as discussed in [TBA]
+% This is the gram matrix ID as discussed in [Bi15]
     
 if compute_gram_matrix
     time_gram_id_tic = tic;
@@ -127,7 +138,7 @@ else
 end
     
 %% Compute randomized Gaussian matrix ID
-% This is matrix ID according to [3]
+% This is matrix ID according to [Ma11]
 
 time_srrqr_gaussian_id_tic = tic;
     fprintf('Running Gaussian matrix ID...\n');
@@ -141,9 +152,9 @@ time_srrqr_gaussian_id_tic = tic;
 time_srrqr_gaussian_id = toc(time_srrqr_gaussian_id_tic);
 
 %% Compute randomized SRFT matrix ID
-% This is matrix ID according to [4]. Note that [5] cannot handle complex
-% numbers (indeed, [2] doesn't even mention complex numbers), so I just do
-% a matrix ID using QR with column pivoting here.
+% This is matrix ID according to [Wo08]. Note that [Xi18] cannot handle
+% complex numbers (indeed, [Gu96] doesn't even mention complex numbers), so
+% I just do a matrix ID using QR with column pivoting here.
 
 if compute_SRFT_matrix
     time_qr_srft_id_tic = tic;
@@ -208,8 +219,6 @@ if compute_SRFT_matrix
 else
     error_qr_srft_id = nan;
 end
-
-
 
 error_srrqr_gaussian_id = max(sqrt(sum((AQQ - A(:,J2)*(P2*QQ)).^2, 1)));
 error_srrqr_cs_id = max(sqrt(sum((AQQ - A(:,J4)*(P4*QQ)).^2, 1)));

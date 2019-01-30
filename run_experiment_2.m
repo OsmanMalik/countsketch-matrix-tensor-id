@@ -13,8 +13,8 @@
 %           in RSVDPACK, and since there is no other implementation of
 %           column pivoted QR available that would allows us to implement
 %           standard matrix ID on sparse matrices (to the best of our
-%           knowledge), we convert the sparse tensor to full format before
-%           decomposing it. This will of course limit the size of matrix
+%           knowledge), we convert the sparse matrix to full format before
+%           decomposing it. This will of course limit the size of matrices
 %           that can be decomposed using this method.
 %       2.  Gaussian matrix ID [Ma11]. Since the implementation in [Vo16]
 %           does not have support for sparse matrices, we use our own
@@ -26,9 +26,7 @@
 %           accelerated FFT presented in the paper [Wo08] available in
 %           Matlab, we use Matlab's FFT instead. Since Matlab's FFT does
 %           not support sparse inputs, we need to convert the input to a
-%           full matrix before applying this algorithm. As for the method
-%           (1), this will also limit the size of the matrices that can be
-%           decomposed using this method.
+%           full matrix before applying this algorithm.
 %       4.  CountSketch matrix ID (proposal). This is our proposed
 %           algorithm for decomposing matrices.
 %
@@ -36,6 +34,7 @@
 %   rank-revealing QR factorization of [Gu96].
 %
 % REFERENCES:
+%
 %   [Ch08]  H. Cheng, Z. Gimbutas, P. G. Martinsson, and V. Rokhlin. On the
 %           compression of low rank matrices. SIAM J. Sci. Comput. 26(4),
 %           pp. 1389-1404, 2005.
@@ -56,6 +55,10 @@
 %   [Wo08]  F. Woolfe, E. Liberty, V. Rokhlin, M. Tygert. A fast randomized
 %           algorithm for the approximation of matrices. Appl. Comput.
 %           Harmon. Anal. 25, pp. 335-366, 2008.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 %% Settings
 % Is: The different number of rows that will be used in this experiment.
@@ -91,7 +94,7 @@ I_mem_lim_SRFT = 1e+6;
 R = 10*1e+3;
 K = 1e+3;
 L = K + 10;
-rho = 5e-3; % rho = 0.01 in experiment 2, rho = 5e-3 in experiment 3
+rho = 5e-3; % rho = 0.01 in experiment 2a, rho = 5e-3 in experiment 2b
 mn = 8;
 SRFT_no_splits = [1 1 1 100 250 500 1000];
 no_rand_norm_vec = 18;

@@ -10,6 +10,10 @@ function SA = TensorSketch(A, h, s, J)
 %   either dense or sparse: The appropriate countSketch function will be
 %   used in each case.
 
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
+
 %% Include relevant files
 
 addpath(genpath('help_functions'));

@@ -5,44 +5,50 @@
 %   sparse matrices, are decomposed using different versions of matrix 
 %   interpolative decomposition (ID). The following versions of matrix ID 
 %   are used:
-%       1. Matrix ID [1]
-%       2. Gaussian matrix ID [3]
-%       3. SRFT matrix ID [5]
+%       1. Matrix ID [Ch05]
+%       2. Gaussian matrix ID [Ma11]
+%       3. SRFT matrix ID [Vo16]
 %       4. CountSketch matrix ID utilizing SRRQR (proposal)
 %       5. CountSketch matrix ID utilizing Matlab QR (proposal)
 %   For 1 and 2, we utilize an existing implementation in the software
-%   package RSVDPACK [4]. We run do this by saving the matrices to a text
-%   file, and then reading them into the functions provided in RSVDPACK for 
-%   matrix ID. 4 and 5 are two different versions of our proposal. The two
-%   methods are identical, with the only difference that 4 utilizes the
-%   strong rank-revealing QR factorization of [2], more precisely the
-%   implementation in [6], whereas 5 utilizes Matlab's QR function. We also
-%   compute the SVD for each given rank and use it as a comparison.
+%   package RSVDPACK [Vo16]. We run do this by saving the matrices to a
+%   text file, and then reading them into the functions provided in
+%   RSVDPACK for matrix ID. 4 and 5 are two different versions of our
+%   proposal. The two methods are identical, with the only difference that
+%   4 utilizes the strong rank-revealing QR factorization of [Gu96], more
+%   precisely the implementation in [Xi18], whereas 5 utilizes Matlab's QR
+%   function. We also compute the SVD for each given rank and use it as a
+%   comparison. 
 %
 % REFERENCES:
-%   [1] H. Cheng, Z. Gimbutas, P. G. Martinsson, and V. Rokhlin. On the
-%       compression of low rank matrices. SIAM J. Sci. Comput. 26(4), pp.
-%       1389-1404, 2005.
 %
-%   [2] M. Gu, and S. C. Eisenstat. Efficient algorithms for computing a
-%       strong rank-revealing QR factorization. SIAM J. Sci. Comput. 17(1),
-%       pp. 848-869, 1996.
+%   [Ch05]  H. Cheng, Z. Gimbutas, P. G. Martinsson, and V. Rokhlin. On the
+%           compression of low rank matrices. SIAM J. Sci. Comput. 26(4),
+%           pp. 1389-1404, 2005.
 %
-%   [3] P. G. Martinsson, V. Rokhlin, M. Tygert. A randomized algorithm for
-%       the decomposition of matrices. Appl. Comput. Harmon. Anal. 30, pp.
-%       47-68, 2011.
+%   [Gu96]  M. Gu, and S. C. Eisenstat. Efficient algorithms for computing
+%           a strong rank-revealing QR factorization. SIAM J. Sci. Comput.
+%           17(1), pp. 848-869, 1996.
 %
-%   [4] S. Voronin, and P. G. Martinsson. RSVDPACK: An implementation of 
-%       randomized algorithms for computing the singular value, 
-%       interpolative, and CUR decompositions of matrices on multi-core and
-%       GPU architectures. arXiv:1502.05366v3 [math.NA], 2016.
+%   [Ma11]  P. G. Martinsson, V. Rokhlin, M. Tygert. A randomized algorithm
+%           for the decomposition of matrices. Appl. Comput. Harmon. Anal.
+%           30, pp. 47-68, 2011.
 %
-%   [5] F. Woolfe, E. Liberty, V. Rokhlin, M. Tygert. A fast randomized
-%       algorithm for the approximation of matrices. Appl. Comput. Harmon.
-%       Anal. 25, pp. 335-366, 2008.
+%   [Vo16]  S. Voronin, and P. G. Martinsson. RSVDPACK: An implementation
+%           of randomized algorithms for computing the singular value, 
+%           interpolative, and CUR decompositions of matrices on multi-core
+%           and GPU architectures. arXiv:1502.05366v3 [math.NA], 2016.
+%
+%   [Wo08]  F. Woolfe, E. Liberty, V. Rokhlin, M. Tygert. A fast randomized
+%           algorithm for the approximation of matrices. Appl. Comput.
+%           Harmon. Anal. 25, pp. 335-366, 2008.
 %   
-%   [6] X. Xing. Interpolative Decomposition based on Strong RRQR. MATLAB
-%       Central File Exchange. Retrieved November 23, 2018.
+%   [Xi18]  X. Xing. Interpolative Decomposition based on Strong RRQR.
+%           MATLAB Central File Exchange. Retrieved November 23, 2018.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 %% Settings
 % n: The matrix will be of size n by n

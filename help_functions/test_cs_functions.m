@@ -6,6 +6,10 @@
 %   in countSketch.c and both as a sparse and dense matrix in
 %   countSketch_sparse.c.
 
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
+
 % Settings
 m = 100; % number of rows of A
 n = 20; % number of columns of A

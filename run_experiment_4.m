@@ -1,6 +1,56 @@
 % RUN_EXPERIMENT_4 Run tensor ID experiment for sparse tensors
+%
+%   This function requires Tensor Toolbox version 2.6 [Ba15].
+%
+%   RUN_EXPERIMENT_4 is a script that runs an experiment where sparse
+%   tensors of known rank and with known s-values are rank reduced using
+%   different versions of tensor interpolative decomposition (ID).
+%
+%   The following versions of tensor ID are used in the comparison:
+%       1.  Tensor ID using Gram matrix [Bi15].
+%       2.  Gaussian tensor ID [Bi15].
+%       3.  CountSketch tensor ID (proposal).
+%
+%   All of the methods utilize column pivoted QR instead of the strongly
+%   rank-revealing QR factorization of [Gu96].
+%
+% REFERENCES:
+%
+%   [Ba15]  B. W. Bader, T. G. Kolda and others. MATLAB Tensor Toolbox 
+%           Version 2.6, Available online, February 2015. 
+%           URL: http://www.sandia.gov/~tgkolda/TensorToolbox/.
+%   
+%   [Bi15]  D. J. Biagioni, D. Beylkin, G. Beylkin. Randomized 
+%           interpolative decomposition of separated representations. J. 
+%           Comput. Phys. 281, pp. 116-134, 2015.
+%
+%   [Gu96]  M. Gu, and S. C. Eisenstat. Efficient algorithms for computing
+%           a strong rank-revealing QR factorization. SIAM J. Sci. Comput.
+%           17(1), pp. 848-869, 1996.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 %% Settings
+% N: The number of dimensions of the tensor
+% Is: The different tensor sizes to use
+% K: The target rank
+% L: The oversampled target rank
+% mn: The size of the smallest nonzero s-values will be 10^(-mn)
+% no_trials: The number of times each experiment is repeated
+% K_mult: The rank of the initial tensor will be K*K_mult
+% lambda: Vector containing the s-values of the initial tensor
+% fac_mat_dens: The density of the factor matrices of the initial tensor
+% s_norm_tol: Used to control tolerance in the function computing the
+%   s-norm
+% maxit: Used to control the maximum number of iterations in the function
+%   computing the s-norm
+% results_matlab_file: Name of mat file to which the results of the
+%   experiment should be stored
+% verbosity: Controls the amount of print out during the execution of the
+%   experiment
+% cnt: Variable used to control how the results are stored in the mat file
 
 N = 5;
 %Is = [10*1e+3 25*1e+3 50*1e+3 100*1e+3 250*1e+3 500*1e+3 1e+6];

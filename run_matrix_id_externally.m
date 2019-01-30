@@ -1,9 +1,9 @@
 function [P, J, time] = run_matrix_id_externally(k, n)
-%RUN_MATRIX_ID_EXTERNALLY Call external matrix ID C code
+% RUN_MATRIX_ID_EXTERNALLY Call external matrix ID C code
 %
 %   [P, J, time] = RUN_MATRIX_ID_EXTERNALLY(k, n) calls the external
 %   executable run_matrix_id, which is compiled from C code. That
-%   executable utilizes the functionality provided in RSVDPACK [] for
+%   executable utilizes the functionality provided in RSVDPACK [Vo16] for
 %   computing the matrix ID of a matrix saved on disk. The inputs k and
 %   n are the target rank and number of columns of the decomposed matrix,
 %   respectively. The resulting decomposition is of the form
@@ -12,10 +12,15 @@ function [P, J, time] = run_matrix_id_externally(k, n)
 %   produce the decomposition.
 %
 % REFERENCES:
-%   [1] S. Voronin, and P. G. Martinsson. RSVDPACK: An implementation of 
-%       randomized algorithms for computing the singular value, 
-%       interpolative, and CUR decompositions of matrices on multi-core and
-%       GPU architectures. arXiv:1502.05366v3 [math.NA], 2016.
+%
+%   [Vo16]  S. Voronin, and P. G. Martinsson. RSVDPACK: An implementation
+%           of randomized algorithms for computing the singular value, 
+%           interpolative, and CUR decompositions of matrices on multi-core
+%           and GPU architectures. arXiv:1502.05366v3 [math.NA], 2016.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 % Execute C code for matrix ID
 system(['./run_matrix_id ', num2str(k)]);

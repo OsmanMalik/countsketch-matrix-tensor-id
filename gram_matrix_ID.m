@@ -1,5 +1,5 @@
 function [P, J] = gram_matrix_ID(A, k)
-%GRAM_MATRIX_ID Compute matrix ID via gram matrix
+% GRAM_MATRIX_ID Compute matrix ID via gram matrix
 %
 %   [P, J] = GRAM_MATRIX_ID(A, k) computes the rank-k matrix ID
 %       A \approx A(:, J)*P.
@@ -12,9 +12,14 @@ function [P, J] = gram_matrix_ID(A, k)
 %   the code in this file does not correspond to that paper exactly.
 %
 % REFERENCES:
+%
 %   [Bi15]  D. J. Biagioni, D. Beylkin, G. Beylkin. Randomized 
 %           interpolative decomposition of separated representations. J. 
 %           Comput. Phys. 281, pp. 116-134, 2015.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 % Form gram matrix B and identity I
 B = A'*A;

@@ -1,17 +1,26 @@
 function Xk = CS_tensor_ID(X, k, l, QR_type)
-%CS_TENSOR_ID Computes CountSketched tensor ID
+% CS_TENSOR_ID Computes CountSketched tensor ID
 %
-%   This function requires Tensor Toolbox [1] version 2.6.
+%   This function requires Tensor Toolbox version 2.6 [Ba15].
 %
 %   Xk = CS_TENSOR_ID(X, k, l, QR_type) returns a rank-k tensor ID of the
 %   input tensor X computed using an oversampling parameter l-k. Note that
 %   we therefore require l >= k. The computation is done by applying
-%   TensorSketch. 
+%   TensorSketch. Tensor ID was first proposed in [Bi15].
 %
 % REFERENCES:
-%   [1] B. W. Bader, T. G. Kolda and others. MATLAB Tensor Toolbox 
-%       Version 2.6, Available online, February 2015. 
-%       URL: http://www.sandia.gov/~tgkolda/TensorToolbox/.
+%
+%   [Ba15]  B. W. Bader, T. G. Kolda and others. MATLAB Tensor Toolbox 
+%           Version 2.6, Available online, February 2015. 
+%           URL: http://www.sandia.gov/~tgkolda/TensorToolbox/.
+%
+%   [Bi15]  D. J. Biagioni, D. Beylkin, G. Beylkin. Randomized 
+%           interpolative decomposition of separated representations. J. 
+%           Comput. Phys. 281, pp. 116-134, 2015.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 % Get dimensions of X
 N = ndims(X);
@@ -29,7 +38,6 @@ end
 A = X.U;
 
 A{1} = A{1}*sparse(1:R, 1:R, X.lambda, R, R);
-%A{1} = repmat(X.lambda.', size(A{1}, 1), 1) .* A{1};
 Z = TensorSketch(A, h, s, l);
 
 % Proceed by using appropriate QR factorization

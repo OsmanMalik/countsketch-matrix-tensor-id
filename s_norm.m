@@ -1,5 +1,7 @@
 function nrm = s_norm(X, tol, varargin)
-%S_NORM Compute the s-norm of the ktensor X
+% S_NORM Compute the s-norm of the ktensor X
+%
+%   This function requires Tensor Toolbox version 2.6 [Ba15].
 %
 %   nrm = S_NORM(X, tol) computes the s-norm of the tensor X. The iteration
 %   terminates when the change in the norm estimate (lambda) is less than
@@ -18,10 +20,18 @@ function nrm = s_norm(X, tol, varargin)
 %   The code is based on the algorithm described in [Bi15].
 %   
 % REFERENCES:
+%
+%   [Ba15]  B. W. Bader, T. G. Kolda and others. MATLAB Tensor Toolbox 
+%           Version 2.6, Available online, February 2015. 
+%           URL: http://www.sandia.gov/~tgkolda/TensorToolbox/.
+%
 %   [Bi15]  D. J. Biagioni, D. Beylkin, G. Beylkin. Randomized 
 %           interpolative decomposition of separated representations. J. 
 %           Comput. Phys. 281, pp. 116-134, 2015.
 
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 %% Handle optional inputs
 

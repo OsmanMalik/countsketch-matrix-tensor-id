@@ -1,7 +1,38 @@
-%TENSOR_ID_COMPARISON A comparison between different tensor ID algorithms.
+%TENSOR_ID_COMPARISON A comparison between different tensor ID algorithms
+%                     [WORK IN PROGRESS]
+%
+%   This function requires Tensor Toolbox version 2.6 [Ba15].
 %
 %   The purpose of this script is to compare different versions of tensor
-%   ID algorithms.
+%   ID algorithms:
+%       1.  Tensor ID using Gram matrix [Bi15].
+%       2.  Gaussian tensor ID [Bi15].
+%       3.  CountSketch tensor ID (proposal).
+%
+%   All of the methods utilize column pivoted QR instead of the strongly
+%   rank-revealing QR factorization of [Gu96].
+%
+% NOTES:
+%   1.  This script is a work in progress, and is a bit messy at the
+%       moment. I expect to clean it up at a later date.
+%
+% REFERENCES:
+%
+%   [Ba15]  B. W. Bader, T. G. Kolda and others. MATLAB Tensor Toolbox 
+%           Version 2.6, Available online, February 2015. 
+%           URL: http://www.sandia.gov/~tgkolda/TensorToolbox/.
+%   
+%   [Bi15]  D. J. Biagioni, D. Beylkin, G. Beylkin. Randomized 
+%           interpolative decomposition of separated representations. J. 
+%           Comput. Phys. 281, pp. 116-134, 2015.
+%
+%   [Gu96]  M. Gu, and S. C. Eisenstat. Efficient algorithms for computing
+%           a strong rank-revealing QR factorization. SIAM J. Sci. Comput.
+%           17(1), pp. 848-869, 1996.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 %% Settings
 

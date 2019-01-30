@@ -1,4 +1,38 @@
 % RUN_EXPERIMENT_3 Run matrix ID experiment for real sparse matrix
+%
+%   RUN_EXPERIMENT_3 is a script that runs an experiment where a real-world
+%   sparse matrix is decomposed using different versions of matrix
+%   interpolative decomposition (ID). Depending on where and how the matrix
+%   is stored, some of the code below may need to be adjusted.
+%   
+%   The following versions of matrix ID are used in the comparison:
+%       1. Gaussian matrix ID [Ma11]
+%       2. SRFT matrix ID [Wo08]
+%       3. CountSketch matrix ID (proposal)
+%
+%   For further details on these methods, see the comment in
+%   run_experiment_2.m.
+%
+%   All of the methods utilize column pivoted QR instead of the strongly
+%   rank-revealing QR factorization of [Gu96].
+%
+% REFERENCES:
+%
+%   [Gu96]  M. Gu, and S. C. Eisenstat. Efficient algorithms for computing
+%           a strong rank-revealing QR factorization. SIAM J. Sci. Comput.
+%           17(1), pp. 848-869, 1996.
+%
+%   [Ma11]  P. G. Martinsson, V. Rokhlin, M. Tygert. A randomized algorithm
+%           for the decomposition of matrices. Appl. Comput. Harmon. Anal.
+%           30, pp. 47-68, 2011.
+%
+%   [Wo08]  F. Woolfe, E. Liberty, V. Rokhlin, M. Tygert. A fast randomized
+%           algorithm for the approximation of matrices. Appl. Comput.
+%           Harmon. Anal. 25, pp. 335-366, 2008.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 %% Settings
 % K: The target rank in the decomposition.

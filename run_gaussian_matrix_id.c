@@ -2,24 +2,34 @@
  * Read matrix from file and apply Gaussian matrix ID to it 
  *
  * This program reads a matrix stored in a file and then applies 
- * Gaussian matrix ID from RSVDPACK [1] to it. It then stores the
+ * Gaussian matrix ID from RSVDPACK [Vo16] to it. It then stores the
  * resulting decomposition in the form of a vector J and a matrix
  * T. More specifically, we have 
  * 		A \approx A(:, J(1:k))*P,
  * where k is the target rank and P = [Ik T']*Perm, and where Ik is the
  * k by k identity matrix, Perm is the n by n permutation matrix
  * Perm = In(:, J), and In is the n by n identity matrix; see
- * Section 2.4 in [1] for further details.
+ * Section 2.4 in [Vo16] for further details.
  *
  * The program takes two optional inputs:
  * 		./run_gaussian_matrix_id k p
  * where k is the target rank, and p is the oversampling parameter.
  *
- * REFERENCES
- * [1]	S. Voronin, and P. G. Martinsson. RSVDPACK: An implementation of 
- * 		randomized algorithms for computing the singular value,
- * 		interpolative, and CUR decompositions of matrices on multi-core and
- * 		GPU architectures. arXiv:1502.05366v3 [math.NA], 2016.
+ * Note that this code is not intended to be called directly from Matlab.
+ * Instead, we recommend using the Matlab wrapper 
+ * run_gaussian_matrix_id_externally.m.
+ *
+ * REFERENCES:
+ *
+ * [Vo16]	S. Voronin, and P. G. Martinsson. RSVDPACK: An implementation 
+ *			of randomized algorithms for computing the singular value,
+ * 			interpolative, and CUR decompositions of matrices on multi-core 
+ *			and GPU architectures. arXiv:1502.05366v3 [math.NA], 2016.
+ * */
+ 
+/* Author:   Osman Asif Malik
+ * Email:    osman.malik@colorado.edu
+ * Date:     January 29, 2019
  * */
 
 #include <stdio.h>

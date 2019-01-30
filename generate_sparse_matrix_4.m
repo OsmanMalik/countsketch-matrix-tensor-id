@@ -1,5 +1,5 @@
 function A = generate_sparse_matrix_4(m, n, k, mn, rho)
-%GENERATE_SPARSE_MATRIX_4 Generates a sparse matrix
+% GENERATE_SPARSE_MATRIX_4 Generates a sparse matrix
 %
 %   A = GENERATE_SPARSE_MATRIX_4(m, n, k, mn, rho) returns a randomly
 %   generated sparse matrix A of size m by n. A is constructed as A =
@@ -8,6 +8,10 @@ function A = generate_sparse_matrix_4(m, n, k, mn, rho)
 %   is chose so that the first k elements along the diagonal of S decay
 %   exponentially to size 1e-mn, and the following k elements constant of
 %   size 1e-mn.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 U = sparse(m, 2*k);
 V = sparse(n, 2*k);

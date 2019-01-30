@@ -1,11 +1,11 @@
 function [P, J] = SRFT_matrix_ID(A, k, l, varargin)
-%SRFT_MATRIX_ID Computes subsampled randomized FFT matrix ID
+% SRFT_MATRIX_ID Computes subsampled randomized FFT matrix ID
 %
 %   [P, J] = SRFT_MATRIX_ID(A, k, l) computes the rank-k matrix ID
 %       A \approx A(:, J)*P,
 %   where A(:, J) contains k columns of A. The argument l > k is k plus the
 %   oversampling parameter. Before applying the matrix ID, we sketch the 
-%   matrix using a subsampled randomized FFT as proposed in [1].
+%   matrix using a subsampled randomized FFT as proposed in [Wo08].
 %
 %   [P, J] = SRFT_MATRIX_ID(___, 'splits', no_splits) splits up the
 %   computation by only computing the SRFT sketch for a subset of 
@@ -15,9 +15,14 @@ function [P, J] = SRFT_matrix_ID(A, k, l, varargin)
 %   the number of columns of A.
 %
 % REFERENCES:
-%   [1] F. Woolfe, E. Liberty, V. Rokhlin, M. Tygert. A fast randomized
-%       algorithm for the approximation of matrices. Appl. Comput. Harmon.
-%       Anal. 25, pp. 335-366, 2008.
+%
+%   [Wo08]  F. Woolfe, E. Liberty, V. Rokhlin, M. Tygert. A fast randomized
+%           algorithm for the approximation of matrices. Appl. Comput.
+%           Harmon. Anal. 25, pp. 335-366, 2008.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 [m, n] = size(A);
 

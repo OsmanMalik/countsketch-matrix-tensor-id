@@ -1,5 +1,5 @@
 function [P, J] = Gaussian_matrix_ID(A, k, l, QR_type)
-%GAUSSIAN_MATRIX_ID Computes Gaussian matrix ID
+% GAUSSIAN_MATRIX_ID Computes Gaussian matrix ID
 %
 %   [P, J] = Gaussian_matrix_ID(A, k, l, QR_type) computes the rank-k
 %   matrix ID
@@ -8,11 +8,12 @@ function [P, J] = Gaussian_matrix_ID(A, k, l, QR_type)
 %   oversampling parameter. QR_type controls the type of QR factorization
 %   used: Set it to 'srrqr' to use the strong rank-revealing QR
 %   factorization of [Gu96] (uses the implementation [Xi18]), or set it to
-%   'qr' to use Matlab's built-in QR function. Before applying the matrix ID, we
-%   sketch the matrix using a Gaussian matrix. This code is based on
-%   Algorithm 6 in the appendix of [Vo15]
+%   'qr' to use Matlab's built-in QR function. Before applying the matrix
+%   ID, we sketch the matrix using a Gaussian matrix. This code is based on
+%   Algorithm 6 in the appendix of [Vo15].
 %
 %   REFERENCES:
+%
 %   [Gu96]  M. Gu, and S. C. Eisenstat. Efficient algorithms for computing 
 %           a strong rank-revealing QR factorization. SIAM J. Sci. Comput. 
 %           17(1), pp. 848-869, 1996.
@@ -24,6 +25,10 @@ function [P, J] = Gaussian_matrix_ID(A, k, l, QR_type)
 %
 %   [Xi18]  X. Xing. Interpolative Decomposition based on Strong RRQR. 
 %           MATLAB Central File Exchange. Retrieved November 23, 2018.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 [m, ~] = size(A);
 

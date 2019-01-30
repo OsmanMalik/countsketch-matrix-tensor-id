@@ -1,5 +1,20 @@
 function SFA = ssfft(A, l, S)
-%SSFFT Computes subsampled FFT.
+% SSFFT Computes subsampled FFT
+%
+%   SFA = SSFFT(A, l, S) computes the subsampled FFT, as described in
+%   Section 3.3 of [Wo08]. Our implementation is slow and inefficient. This
+%   function will probably be removed from the repo, since it is not used
+%   in any of the experiments.
+%
+% REFERENCES:
+%
+%   [Wo08]  F. Woolfe, E. Liberty, V. Rokhlin, M. Tygert. A fast randomized
+%           algorithm for the approximation of matrices. Appl. Comput.
+%           Harmon. Anal. 25, pp. 335-366, 2008.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 [no_row, no_col] = size(A);
 n = no_col;

@@ -38,8 +38,6 @@
  *
  * Warning: the code does not do error checks, so it can easily crash.
  * Make sure that the "indx_map" is of type int64
- * HIGHLY RECOMMENDED: do not call this function yourself,
- *  but only through FJLT_Count.m
  *
  * Stephen Becker, stephen.becker@colorado.edu, June 21 2015
  * The use of CountSketch was suggested by Haim Avron

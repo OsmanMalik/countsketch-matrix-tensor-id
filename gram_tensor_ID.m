@@ -1,7 +1,7 @@
 function Xk = gram_tensor_ID(X, k)
-%GRAM_TENSOR_ID Compute tensor ID via gram matrix
+% GRAM_TENSOR_ID Compute tensor ID via gram matrix
 %
-%   This function requires Tensor Toolbox [Ba15] version 2.6.
+%   This function requires Tensor Toolbox version 2.6 [Ba15].
 %
 %   Xk = GRAM_TENSOR_ID(X, k) returns a rank-k tensor ID of the input
 %   tensor X computed using the gram matrix described in equation (1.12) in
@@ -12,6 +12,7 @@ function Xk = gram_tensor_ID(X, k)
 %   the code in this file does not correspond to that paper exactly.
 %
 % REFERENCES:
+%
 %   [Ba15]  B. W. Bader, T. G. Kolda and others. MATLAB Tensor Toolbox 
 %           Version 2.6, Available online, February 2015. 
 %           URL: http://www.sandia.gov/~tgkolda/TensorToolbox/.
@@ -19,6 +20,10 @@ function Xk = gram_tensor_ID(X, k)
 %   [Bi15]  D. J. Biagioni, D. Beylkin, G. Beylkin. Randomized 
 %           interpolative decomposition of separated representations. J. 
 %           Comput. Phys. 281, pp. 116-134, 2015.
+
+% Author:   Osman Asif Malik
+% Email:    osman.malik@colorado.edu
+% Date:     January 29, 2019
 
 N = ndims(X);
 R = ncomponents(X);
