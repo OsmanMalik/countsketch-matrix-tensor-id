@@ -21,7 +21,9 @@ The mex files can be compiled by using the standard Matlab mex commands. For the
 The four script files **run_experiment_n.m** (where n = 1, 2, 3, 4), can be used to reproduce our experiments. Each experiment is described below.
 * **Experiment 1:** This experiment compares standard matrix ID, Gaussian matrix ID, SRFT matrix ID, and two versions of our proposed CountSketch matrix ID (with strongly rank-revealing QR, or with column pivoted QR). It can be set up so that the test matrices are either dense with a specific structure, or just random sparse matrices with no particular structure aside from sparsity. Our paper does not include any results from this experiment.
 * **Experiment 2:** This experiment compares standard matrix ID, Gaussian matrix ID, SRFT matrix ID, and our proposed CountSketch matrix ID (with column pivoted QR). The test matrices in this experiment are sparse, with a specific structure. The figure below shows results from this experiment that are included in our paper.
-![Experiment results](plot-experiment-2b-error.png) ![Experiment results](plot-experiment-2b-time.png)
+<img src="plot-experiment-2b-error.png" width="40%">
+![Experiment results](plot-experiment-2b-error.png) 
+![Experiment results](plot-experiment-2b-time.png)
 * **Experiment 3:** This experiment compares Gaussian matrix ID, SRFT matrix ID, and our proposed CountSketch matrix ID (with column pivoted QR). The decomposed matrix is a real-world matrix. In our paper, we use the matrix *specular* matrix, which is available at https://sparse.tamu.edu/Brogan/specular. The table below shows results from this experiment that are included in our paper.
 
 | Algorithm | Error | Run time (s) |
