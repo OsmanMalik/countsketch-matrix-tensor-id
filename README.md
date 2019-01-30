@@ -27,6 +27,7 @@ The four script files **run_experiment_n.m** (where n = 1, 2, 3, 4), can be used
 </p>
 * **Experiment 3:** This experiment compares Gaussian matrix ID, SRFT matrix ID, and our proposed CountSketch matrix ID (with column pivoted QR). The decomposed matrix is a real-world matrix. In our paper, we use the matrix *specular* matrix, which is available at https://sparse.tamu.edu/Brogan/specular. The table below shows results from this experiment that are included in our paper.
 <p align="center">
+
 | Algorithm | Error | Run time (s) |
 | --- | --- | --- |
 | Gaussian | 1.505e-15 | 20.38 |
