@@ -1,9 +1,9 @@
 # CountSketch Matrix and Tensor Interpolative Decomposition
 This repository provides the code we use in our preprint paper 
 
-[TBA]
+O. A. Malik and S. Becker. Fast Randomized Matrix and Tensor Interpolative Decomposition Using CountSketch. *arXiv:1901.10559 [cs.NA]*, 29 January 2019.
 
-It is available at [TBA].
+It is available at https://arxiv.org/abs/1901.10559.
 
 ## Some further details
 In our paper, we propose a new fast randomized algorithm for interpolative decomposition (ID) of matrices utilizing the CountSketch technique. We then extend our method to the recently proposed tensor ID problem. This repository provides all the code we use in our experiments in the paper, including implementations of our proposed CountSketch matrix and tensor ID algorithms which are provided in the functions **CS_matrix_ID.m** and **CS_tensor_ID.m**, respectively.
