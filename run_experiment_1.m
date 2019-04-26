@@ -104,7 +104,7 @@ for tr = 1:no_trials
             fprintf('Generating %s %d by %d matrix... ', matrix_type, n, n);
         end
         if strcmp(matrix_type, 'dense')
-            A = generate_dense_matrix(n, k, min_sv);
+            A = generate_dense_matrix(n, n, k, min_sv);
         elseif strcmp(matrix_type, 'sparse')
             A = sprand(n, n, sparse_matrix_density);
         else
