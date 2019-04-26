@@ -46,3 +46,8 @@ Most of the code in this repository is implementations of algorithms invented by
 
 ## Author contact information
 Please feel free to contact me at any time if you have any questions or would like to provide feedback on this code or on our paper. I can be reached at osman.malik@colorado.edu.
+
+## Licenses
+The code in the folder AlgorithmCUR is downloaded from Christos Boutsidis's website (http://www.boutsidis.org/software.html) and is included with this repository for convenience.
+
+All other code in this project falls under the license in the root of this project.
