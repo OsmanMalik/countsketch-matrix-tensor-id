@@ -51,6 +51,7 @@ if strcmp(QR_type, 'srrqr')
     P = P.';
 elseif strcmp(QR_type, 'qr')
     [~, R, e] = qr(Y, 0);
+    k = min(k, rank(R));
     T = R(1:k, 1:k) \ R(1:k, k+1:end);
     P = [eye(k) T];
     pvec(e) = 1:length(e);
