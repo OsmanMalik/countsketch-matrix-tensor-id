@@ -93,13 +93,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
 		//cnt = 0;
 		#pragma omp parallel for private(col, i, k, j)
 		for (col = 0; col < mSmall; col++) {
-			//printf("col = %d\n", col);
 			for (i = 0; i < mult_count[col]; i++) {
-				if (col == 0) {
-					k = perm_map[i]-1;
-				} else {
-					k = perm_map[mult_count_cumsum[col-1] + i]-1;
-				}
+				k = perm_map[mult_count_cumsum[col] + i]-1;
 				for (j = jc[k]; j < jc[k+1]; j++) {
 					Pt[col*n + ir[j]] += s[k]*a[j];
 				}

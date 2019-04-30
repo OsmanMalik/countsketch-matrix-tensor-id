@@ -33,7 +33,7 @@ s = cell(N, 1);
 for n = 1:N
     perm_map{n} = randperm(size(A{n}, 1));
     mult_count{n} = mnrnd(size(A{n}, 1), ones(1, J) / J);
-    mult_count_cumsum{n} = cumsum(mult_count{n});
+    mult_count_cumsum{n} = [0 cumsum(mult_count{n})];
     s{n} = randi(2, size(A{n}, 1), 1)*2-3;
 end
 
