@@ -1,4 +1,4 @@
-function Y = ktensor_square_iteration(X, max_iter)
+function [Y, sketch_tocs] = ktensor_square_iteration(X, max_iter, sketch_method)
 % KTENSOR_SQUARE_ITERATION Repeatedly square and normalize the elements of
 % the ktensor X.
 %
@@ -28,14 +28,33 @@ Y = X;
 Y = normalize(Y);
 Y = (1/max(Y.lambda))*Y;
 K = ncomponents(Y);
-L = K;
+L = K + 10;
+sketch_tocs = nan(max_iter, 1);
 
 for it = 1:max_iter
     Q = ktensor_hprod(Y, Y);
-    Y = CS_tensor_ID(Q, K, L, 'qr');
+    sketch_tic = tic;
+    if strcmp(sketch_method, 'gram')
+        if it == 1
+            fprintf('Using gram matrix approach...\n');
+        end
+        Y = gram_tensor_ID(Q, K);
+    elseif strcmp(sketch_method, 'gaussian')
+        if it == 1
+            fprintf('Using Gaussian sketching...\n');
+        end
+        Y = gaussian_tensor_ID(Q, K, L, 'qr');
+    else
+        if it == 1
+            fprintf('Using CountSketch...\n');
+        end
+        Y = CS_tensor_ID(Q, K, L, 'qr');
+    end
+    sketch_toc = toc(sketch_tic);
+    sketch_tocs(it) = sketch_toc;
     Y = normalize(Y);
     Y = (1/max(Y.lambda))*Y;
-    fprintf('Finished iteration %d. Maximum lambda is %.3e.\n', it, max(Y.lambda));
+    fprintf('Finished iteration %d in %.2f s. Maximum lambda is %.3e.\n', it, sketch_toc, max(Y.lambda));
     if ncomponents(Y) == 1
         fprintf('Y is rank 1. Breaking...\n\n');
         break
