@@ -26,19 +26,11 @@ function Xk = CS_tensor_ID(X, k, l, QR_type)
 N = ndims(X);
 R = ncomponents(X);
 
-% Define hash functions
-h = cell(N, 1);
-s = cell(N, 1);
-for n = 1:N
-    h{n} = randi(l, size(X, n), 1);
-    s{n} = randi(2, size(X, n), 1)*2-3;
-end
-
 % Compute TensorSketch of matrix corresponding to X
 A = X.U;
 
 A{1} = A{1}*sparse(1:R, 1:R, X.lambda, R, R);
-Z = TensorSketch(A, h, s, l);
+Z = TensorSketch3(A, l);
 
 % Proceed by using appropriate QR factorization
 if strcmp(QR_type, 'srrqr')

@@ -1,4 +1,4 @@
-function SA = TensorSketch(A, h, s, J)
+function SA = TensorSketch(A, J)
 %TENSORSKETCH Computes the TensorSketch of a matrix Khatri-Rao product
 %
 %   SA = TENSORSKETCH(A, h, s, J) returns the TensorSketch of the
@@ -16,7 +16,7 @@ function SA = TensorSketch(A, h, s, J)
 
 %% Include relevant files
 
-addpath(genpath('help_functions'));
+%addpath(genpath('help_functions'));
 
 %% Computations
 
@@ -25,6 +25,15 @@ R = size(A{1}, 2);
 Acs = cell(size(A)); % To store CountSketch of each matrix in A. FFT and transpose are also applied.
 P = ones(J, R);
 
+% Define hash functions
+h = cell(N, 1);
+s = cell(N, 1);
+for n = 1:N
+    h{n} = randi(J, size(A{n}, 1), 1);
+    s{n} = randi(2, size(A{n}, 1), 1)*2-3;
+end
+
+% Perform computations
 for n = 1:N
     if issparse(A{n})
         Acs{n} = fft(countSketch_sparse(A{n}.', int64(h{n}), J, s{n}).');
