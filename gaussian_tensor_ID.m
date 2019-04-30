@@ -39,7 +39,15 @@ R = ncomponents(X);
 % Compute projection Y (Steps 1 and 2 in Alg. 3 of [Bi15])
 Y = ones(l, R);
 for n = 1:N
+    
+    %fprintf('MODIFIED GAUSSIAN\n')
+    %G = zeros(l, I(n));
+    %nnzidx = sum(abs(X.U{n}), 2) ~= 0;
+    %G(:, nnzidx) = randn(l, sum(nnzidx));
+    
+    %fprintf('OLD GAUSSIAN\n')
     G = randn(l, I(n));
+    
     Y = Y .* (G*X.U{n});
 end
 Y = repmat(X.lambda.', l, 1) .* Y;
