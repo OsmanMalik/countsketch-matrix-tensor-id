@@ -61,6 +61,8 @@ for it = 1:max_iter
     end
 end
 
-fprintf('Max iterations reached. Breaking...\n\n');
+if ncomponents(Y)~= 1
+    fprintf('Max iterations reached. Breaking...\n\n');
+end
 
 end
