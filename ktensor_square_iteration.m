@@ -1,4 +1,4 @@
-function [Y, sketch_tocs] = ktensor_square_iteration(X, max_iter, sketch_method)
+function [Y, sketch_tocs] = ktensor_square_iteration(X, max_iter, sketch_method, varargin)
 % KTENSOR_SQUARE_ITERATION Repeatedly square and normalize the elements of
 % the ktensor X.
 %
@@ -9,6 +9,12 @@ function [Y, sketch_tocs] = ktensor_square_iteration(X, max_iter, sketch_method)
 %   when the squared tensor has become rank 1. The value max_iter sets the
 %   maximum number of iterations. This is Algorithm 2 in [Re17], but with a
 %   slightly different normalization.
+%
+%   Y = KTENSOR_SQUARE_ITERATION(___, 'fullrandom', val) allows you to
+%   control whether or not columns in the Gaussian sketch matrices
+%   corresponding to zero rows in the factor matrices are generated or just
+%   left as zero; see gaussian_tensor_ID for more details. This has an
+%   impact on the code if the sketch_method is 'gaussian'.
 %
 % REFERENCES:
 %
@@ -24,6 +30,13 @@ function [Y, sketch_tocs] = ktensor_square_iteration(X, max_iter, sketch_method)
 % Email:    osman.malik@colorado.edu
 % Date:     April 27, 2019
 
+% Handle optional inputs
+params = inputParser;
+addParameter(params, 'fullrandom', true);
+parse(params, varargin{:});
+fullrandom = params.Results.fullrandom;
+
+% Initial computations
 Y = X;
 Y = normalize(Y);
 Y = (1/max(Y.lambda))*Y;
@@ -31,6 +44,7 @@ K = ncomponents(Y);
 L = K + 10;
 sketch_tocs = nan(max_iter, 1);
 
+% Main loop
 for it = 1:max_iter
     Q = ktensor_hprod(Y, Y);
     sketch_tic = tic;
@@ -43,7 +57,7 @@ for it = 1:max_iter
         if it == 1
             fprintf('Using Gaussian sketching...\n');
         end
-        Y = gaussian_tensor_ID(Q, K, L, 'qr');
+        Y = gaussian_tensor_ID(Q, K, L, 'qr', 'fullrandom', fullrandom);
     else
         if it == 1
             fprintf('Using CountSketch...\n');
