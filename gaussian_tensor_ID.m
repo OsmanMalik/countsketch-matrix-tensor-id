@@ -1,4 +1,4 @@
-function Xk = gaussian_tensor_ID(X, k, l, QR_type)
+function Xk = gaussian_tensor_ID(X, k, l, QR_type, varargin)
 % GAUSSIAN_TENSOR_ID Computes Gaussian tensor ID
 %
 %   This function requires Tensor Toolbox version 2.6 [Ba15].
@@ -10,6 +10,19 @@ function Xk = gaussian_tensor_ID(X, k, l, QR_type)
 %   is used: Set it to 'srrqr' to use the strong rank-revealing QR
 %   factorization of [Gu96] (uses the implementation [Xi18]), or set it to
 %   'qr' to use Matlab's built-in QR function.
+%
+%   Xk = GAUSSIAN_TENSOR_ID(___, 'fullrandom', val) allows you to control
+%   whether or not columns in the Gaussian sketch matrices corresponding to
+%   zero rows in the factor matrices are generated or just left as zero.
+%   More specifically: If val is true (default), then all elements of the
+%   Gaussian sketch matrices are generated; if val is false, then the
+%   Gaussian matrices are initialized to be zero matrices, and then only
+%   the columns of the Gaussian matrices corresponding to nonzero rows of
+%   the corresponding factor matrices are actually generated as Gaussian
+%   random variables, i.e., we avoid generating those Gaussian entries that
+%   are never used. Setting val to false can be faster when the factor
+%   matrices are very sparse, but is slower if e.g. all rows of the factor
+%   matrices contain nonzero entries.
 %
 % REFERENCES:
 %
@@ -32,6 +45,13 @@ function Xk = gaussian_tensor_ID(X, k, l, QR_type)
 % Email:    osman.malik@colorado.edu
 % Date:     January 29, 2019
 
+% Handle optional inputs
+params = inputParser;
+addParameter(params, 'fullrandom', true);
+parse(params, varargin{:});
+fullrandom = params.Results.fullrandom;
+
+% Get dimensions of X
 N = ndims(X);
 I = size(X);
 R = ncomponents(X);
@@ -39,15 +59,17 @@ R = ncomponents(X);
 % Compute projection Y (Steps 1 and 2 in Alg. 3 of [Bi15])
 Y = ones(l, R);
 for n = 1:N
-    
-    %fprintf('MODIFIED GAUSSIAN\n')
-    %G = zeros(l, I(n));
-    %nnzidx = sum(abs(X.U{n}), 2) ~= 0;
-    %G(:, nnzidx) = randn(l, sum(nnzidx));
-    
-    %fprintf('OLD GAUSSIAN\n')
-    G = randn(l, I(n));
-    
+    if fullrandom
+        % Generate all entries of the Gaussian matrices
+        G = randn(l, I(n));
+    else
+        % Only generate those entries of the Gaussian matrices
+        % corresponding to rows with nonzero entries in the corresponding
+        % factor matrices
+        G = zeros(l, I(n));
+        nnzidx = sum(abs(X.U{n}), 2) ~= 0;
+        G(:, nnzidx) = randn(l, sum(nnzidx));
+    end
     Y = Y .* (G*X.U{n});
 end
 Y = repmat(X.lambda.', l, 1) .* Y;
@@ -59,7 +81,7 @@ if strcmp(QR_type, 'srrqr')
     P = P.';
 elseif strcmp(QR_type, 'qr')
     [~, R, e] = qr(Y, 0);
-    k = min(k, rank(R));
+    k = min(k, rank(R)); % Added this line to avoid issues when computing T when rank(Z) = rank(R) < k
     T = R(1:k, 1:k) \ R(1:k, k+1:end);
     P = [eye(k) T];
     pvec(e) = 1:length(e);
