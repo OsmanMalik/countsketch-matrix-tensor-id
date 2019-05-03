@@ -28,9 +28,8 @@ R = ncomponents(X);
 
 % Compute TensorSketch of matrix corresponding to X
 A = X.U;
-
 A{1} = A{1}*sparse(1:R, 1:R, X.lambda, R, R);
-Z = TensorSketch3(A, l);
+Z = TensorSketch(A, l);
 
 % Proceed by using appropriate QR factorization
 if strcmp(QR_type, 'srrqr')
@@ -39,7 +38,7 @@ if strcmp(QR_type, 'srrqr')
     P = P';
 elseif strcmp(QR_type, 'qr')
     [~, R, e] = qr(Z, 0);
-    k = min(k, rank(R));
+    k = min(k, rank(R)); % Added this line to avoid issues when computing T when rank(Z) = rank(R) < k 
     T = R(1:k, 1:k) \ R(1:k, k+1:end);
     P = [eye(k) T];
     pvec(e) = 1:length(e);
