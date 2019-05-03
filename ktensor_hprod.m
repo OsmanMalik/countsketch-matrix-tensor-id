@@ -27,7 +27,11 @@ end
 lambda = kron(A.lambda, B.lambda);
 U = cell(N1, 1);
 for n = 1:N1
-    U{n} = sparse_khatrirao(A.U{n}.', B.U{n}.').';
+    if issparse(A.U{n}) && issparse(B.U{n})
+        U{n} = sparse_khatrirao(A.U{n}.', B.U{n}.').';
+    else
+        U{n} = khatrirao(A.U{n}.', B.U{n}.').';
+    end
 end
 
 C = ktensor(lambda, U);
