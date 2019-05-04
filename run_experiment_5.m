@@ -41,10 +41,10 @@
 %   of the sketch matrices in the Gaussian tensor ID experiment.
 
 data_path = 'C:\Users\Osman\Desktop\enron_results_10\';
-threshold = 1e-3;
+threshold = 1e-6; % We use 1e-6 in our experiment
 max_iter = 20;
 no_trial = 1;
-gaussian_fullrandom = false;
+gaussian_fullrandom = false; % false in our experiment
 
 %% Load the decomposed data
 % Note that the "format long e" command is required for Matlab to properly
