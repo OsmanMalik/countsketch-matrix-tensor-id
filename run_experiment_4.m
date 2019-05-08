@@ -42,6 +42,8 @@
 % K_mult: The rank of the initial tensor will be K*K_mult
 % lambda: Vector containing the s-values of the initial tensor
 % fac_mat_dens: The density of the factor matrices of the initial tensor
+% use_s_norm: Set to true if the error should be computed using the s-norm,
+%   and set to false to use the ktensor norm from Tensor Toolbox.
 % s_norm_tol: Used to control tolerance in the function computing the
 %   s-norm
 % maxit: Used to control the maximum number of iterations in the function
@@ -54,15 +56,17 @@
 
 N = 5;
 %Is = [10*1e+3 25*1e+3 50*1e+3 100*1e+3 250*1e+3 500*1e+3 1e+6];
-%Is = [1e+3 2e+3];
-Is = [1e+3 2.5e+3 5e+3 1e+4 2.5e+4 5e+4 1e+5 2.5e+5];
+%Is = [1e+3 2.5e+3 5e+3 1e+4];
+Is = [1e+3 2.5e+3 5e+3 1e+4 2.5e+4 5e+4 1e+5];
 K = 1e+3;
 L = K + 10;
-mn = 8;
+mn = 4;
 no_trials = 10;
 K_mult = 10;
-lambda = 10.^(-((0:K_mult*K-1)/(K_mult*K))*mn);
+%lambda = 10.^(-((0:K_mult*K-1)/(K_mult*K))*mn);
+lambda = 10.^[-((0:K-1)/K)*mn repmat(-mn, 1, K*(K_mult-1))];
 fac_mat_dens = .01;
+use_s_norm = false;
 s_norm_tol = 1e-12;
 maxit = 1000;
 results_matlab_file = 'matlab_output_exp_4';
@@ -70,6 +74,9 @@ verbosity = 1;
 cnt = 1;
 
 %% Main loop
+
+% Add path to necessary help functions
+addpath('help_functions')
 
 % Create mat and set up matfile for saving results computed in Matlab
 save_mat = matfile(results_matlab_file, 'Writable', true);
@@ -132,22 +139,40 @@ for i = 1:length(Is)
         
         % Compute errors
         if verbosity >= 1
-            fprintf('Computing errors...\n');
+            if use_s_norm
+                fprintf('Computing errors using s-norm...\n'); %#ok<UNRCH>
+                normX = s_norm(X, s_norm_tol, 'verbosity', verbosity, 'init', 'mean', 'maxit', maxit);
+            else
+                fprintf('Computing errors using Frobenius norm...\n');
+                normX = norm(X);
+            end
         end
         
-        gram_error = s_norm(X-Xk_gram, s_norm_tol, 'verbosity', verbosity, 'init', 'mean', 'maxit', maxit);
+        if use_s_norm
+            gram_error = s_norm(X-Xk_gram, s_norm_tol, 'verbosity', verbosity, 'init', 'mean', 'maxit', maxit); %#ok<UNRCH>
+        else
+            gram_error = full(norm(X-Xk_gram));
+        end
         if verbosity >= 1
-            fprintf('Gram tensor ID error: %.10e. Time: %.2f s.\n', gram_error, gram_toc);
+            fprintf('Gram tensor ID relative error: %.10e. Time: %.2f s.\n', gram_error/normX, gram_toc);
         end
         
-        gaussian_error = s_norm(X-Xk_gaussian, s_norm_tol, 'verbosity', verbosity, 'init', 'mean', 'maxit', maxit);
+        if use_s_norm
+            gaussian_error = s_norm(X-Xk_gaussian, s_norm_tol, 'verbosity', verbosity, 'init', 'mean', 'maxit', maxit); %#ok<UNRCH>
+        else
+            gaussian_error = full(norm(X-Xk_gaussian));
+        end
         if verbosity >= 1
-            fprintf('Gaussian tensor ID error: %.10e. Time: %.2f s.\n', gaussian_error, gaussian_toc);
+            fprintf('Gaussian tensor ID relative error: %.10e. Time: %.2f s.\n', gaussian_error/normX, gaussian_toc);
         end
         
-        CS_error = s_norm(X-Xk_CS, s_norm_tol, 'verbosity', verbosity, 'init', 'mean', 'maxit', maxit);
+        if use_s_norm
+            CS_error = s_norm(X-Xk_CS, s_norm_tol, 'verbosity', verbosity, 'init', 'mean', 'maxit', maxit); %#ok<UNRCH>
+        else
+            CS_error = full(norm(X-Xk_CS));
+        end
         if verbosity >= 1
-            fprintf('CountSketch tensor ID error: %.10e. Time: %.2f s.\n', CS_error, CS_toc);
+            fprintf('CountSketch tensor ID relative error: %.10e. Time: %.2f s.\n', CS_error/normX, CS_toc);
         end
         
         % Save errors and times
@@ -156,9 +181,9 @@ for i = 1:length(Is)
         end        
         save_mat.I(1, cnt)      = Is(i);
         save_mat.trial(1, cnt)  = tr;   
-        save_mat.error(1, cnt)  = gram_error; 
-        save_mat.error(2, cnt)  = gaussian_error; 
-        save_mat.error(3, cnt)  = CS_error;
+        save_mat.error(1, cnt)  = gram_error/normX; 
+        save_mat.error(2, cnt)  = gaussian_error/normX; 
+        save_mat.error(3, cnt)  = CS_error/normX;
         save_mat.time(1, cnt)   = gram_toc;
         save_mat.time(2, cnt)   = gaussian_toc;
         save_mat.time(3, cnt)   = CS_toc;
