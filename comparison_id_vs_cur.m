@@ -18,7 +18,7 @@
 addpath('AlgorithmCUR');
 
 % Generate a test matrix
-mn = 8;
+mn = 14;
 n = 1000;
 k = 100;
 A = generate_dense_matrix(n, n, k, mn);
@@ -29,16 +29,23 @@ A = generate_dense_matrix(n, n, k, mn);
 % Compute CUR
 [C, U, R] = AlgorithmCUR(A, n, k, n);
 
+% Compute CX
+X = pinv(C)*A;
+
 % Compute error
 err_ID = norm(A - A(:, J)*P);
 err_CUR = norm(A - C*U*R);
+err_CX = norm(A - C*X);
 
 % Compute condition number of "coefficient matrix"
 cond_ID = cond(P);
 cond_CUR = cond(U*R);
+cond_CX = cond(X);
 
 % Print results
 fprintf('Error for ID: %.4e\n', err_ID);
 fprintf('Error for CUR: %.4e\n', err_CUR);
+fprintf('Error for CX: %.4e\n', err_CX);
 fprintf('Condition number for ID coefficient matrix: %.4e\n', cond_ID);
 fprintf('Condition number for CUR coefficient matrix: %.4e\n', cond_CUR);
+fprintf('Condition number for CX coefficient matrix: %.4e\n', cond_CX);
