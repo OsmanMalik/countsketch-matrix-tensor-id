@@ -37,7 +37,11 @@ end
 G = G .* (X.lambda*X.lambda.');
 
 % Compute relevant portions of matrix ID of G
-[~, ~, p] = qr(G, 0);
+G_full = full(G);
+qr_tic = tic;
+%[~, ~, p] = qr(G, 0);
+[~, ~, p] = qr(G_full, 0);
+qr_toc = toc(qr_tic); fprintf('Time for QR: %.2f\n', qr_toc);
 Pc = Id(:, p);
 J = p(1:k).';
 
