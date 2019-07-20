@@ -1,7 +1,7 @@
 # CountSketch Matrix and Tensor Interpolative Decomposition
 This repository provides the code we use in our preprint paper 
 
-O. A. Malik and S. Becker. Fast Randomized Matrix and Tensor Interpolative Decomposition Using CountSketch. *arXiv:1901.10559 [cs.NA]*, 29 January 2019.
+O. A. Malik and S. Becker. Fast Randomized Matrix and Tensor Interpolative Decomposition Using CountSketch. *CoRR*, abs/1901.10559, 29 January 2019.
 
 It is available at https://arxiv.org/abs/1901.10559.
 
@@ -40,7 +40,16 @@ The four script files **run_experiment_n.m** (where n = 1, 2, 3, 4), can be used
 </p>
 
 ## Referencing this code
-If you use our code in any of your own work, please provide a reference to this repository. If you use CountSketch matrix or tensor ID, please also provide a reference to our paper. 
+If you use our code in any of your own work, please reference our paper:
+```
+@article{Malik-Becker-2019,
+  author    = {Osman Asif Malik and Stephen Becker},
+  title     = {Fast Randomized Matrix and Tensor Interpolative Decomposition Using {CountSketch}},
+  journal   = {CoRR},
+  volume    = {abs/1901.10559},
+  year      = {2019},
+}
+```
 
 Most of the code in this repository is implementations of algorithms invented by other researchers. We have done our best to include relevant references in the comments of our code.
 
