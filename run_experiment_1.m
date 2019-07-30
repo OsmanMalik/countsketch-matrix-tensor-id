@@ -67,16 +67,18 @@
 % sparse_matrix_density: Used to control the density of A when it is a
 %   random sparse matrix
 
-n = 10000;
+n = 1000;
 oversampling = 10;
 no_trials = 10;
 bin_file = 'data/A_mat.bin';
 results_matlab_file = 'matlab_output';
 verbosity = 1;
-matrix_type = 'dense';
-ranks = [50 100 200 500 1000 2000 5000]; % Only used if matrix_type = 'dense'
+matrix_type = 'preset';
+ranks = [50 100 200]; % Only used if matrix_type = 'dense'
 min_sv = 8; % Only used if matrix_type = 'dense'
 sparse_matrix_density = 0.05; % Only used if matrix_type = 'sparse'
+A_preset = full(gallery('lotkin', n));
+only_randomized = true;
 
 %% Main loop
 
@@ -107,6 +109,8 @@ for tr = 1:no_trials
             A = generate_dense_matrix(n, n, k, min_sv);
         elseif strcmp(matrix_type, 'sparse')
             A = sprand(n, n, sparse_matrix_density);
+        elseif strcmp(matrix_type, 'preset')
+            A = A_preset;
         else
             error('Invalid matrix_type');
         end
@@ -115,24 +119,31 @@ for tr = 1:no_trials
         end
 
         % Save matrix A to file
-        if verbosity >= 1
-            fprintf('Saving matrix to file...\n');
-        end
-        save_matrix_to_file(A, bin_file, verbosity);
-        if verbosity >= 1
-            fprintf('Finished writing to file!\n');
+        if ~only_randomized
+            if verbosity >= 1
+                fprintf('Saving matrix to file...\n');
+            end
+            save_matrix_to_file(A, bin_file, verbosity);
+            if verbosity >= 1
+                fprintf('Finished writing to file!\n');
+            end
         end
 
         % Compute matrix ID (RSVDPACK)
-        if verbosity >= 1
-            fprintf('Running RSVDPACK matrix ID... ');
-        end
-        [P_STD, J_STD, time_STD] = run_matrix_id_externally(k, n);
-        if verbosity >= 1
-            fprintf('Done!\n');
+        if ~only_randomized
+            if verbosity >= 1
+                fprintf('Running RSVDPACK matrix ID... ');
+            end
+            [P_STD, J_STD, time_STD] = run_matrix_id_externally(k, n);
+            if verbosity >= 1
+                fprintf('Done!\n');
+            end
+        else
+            time_STD = nan;
         end
 
         % Compute Gaussian matrix ID (RSVDPACK)
+        %{
         if verbosity >= 1
             fprintf('Running RSVDPACK Gaussian matrix ID... ');
         end
@@ -140,7 +151,19 @@ for tr = 1:no_trials
         if verbosity >= 1
             fprintf('Done!\n');
         end
-
+        time_GA = nan;
+        %}
+        
+        if verbosity >= 1
+            fprintf('Running Gaussian matrix ID... ');
+        end
+        tic_GA = tic;
+        [P_GA, J_GA] = Gaussian_matrix_ID(A, k, l, 'qr');
+        toc_GA = toc(tic_GA);
+        if verbosity >= 1
+            fprintf('Done!\n');
+        end
+        
         % Compute SRFT matrix ID (Matlab qr)
         if verbosity >= 1
             fprintf('Running SRFT matrix ID... ');
@@ -153,6 +176,7 @@ for tr = 1:no_trials
         end
 
         % Compute CountSketch matrix ID (utilizing SRRQR of [2])
+        %{
         if verbosity >= 1
             fprintf('Running CountSketched matrix ID utilizing SRRQR... ');
         end
@@ -162,7 +186,8 @@ for tr = 1:no_trials
         if verbosity >= 1
             fprintf('Done!\n');
         end
-
+        %}
+        
         % Compute CountSketch matrix ID (utilizing Matlab qr)
         if verbosity >= 1
             fprintf('Running CountSketched matrix ID utilizing Matlab QR... ');
@@ -189,22 +214,31 @@ for tr = 1:no_trials
         if verbosity >= 1
             fprintf('Computing errors...\n');
         end
-        error_STD = norm(A - A(:, J_STD)*P_STD);
-        if verbosity >= 1
-            fprintf('RSVDPACK matrix ID error: %.10e. Time: %.2f s.\n', error_STD, time_STD);
+        
+        if ~only_randomized
+            error_STD = norm(A - A(:, J_STD)*P_STD);
+            if verbosity >= 1
+                fprintf('RSVDPACK matrix ID error: %.10e. Time: %.2f s.\n', error_STD, time_STD);
+            end
+        else
+            error_STD = nan;
         end
+        
         error_GA = norm(A - A(:, J_GA)*P_GA);
         if verbosity >= 1
-            fprintf('RSVDPACK Gaussian matrix ID error: %.10e. Time: %.2f s.\n', error_GA, time_GA);    
+            fprintf('Gaussian matrix ID error: %.10e. Time: %.2f s.\n', error_GA, toc_GA);    
         end
+        
         error_SRFT = norm(A - A(:, J_SRFT)*P_SRFT);
         if verbosity >= 1
             fprintf('SRFT matrix ID error: %.10e. Time: %.2f s.\n', error_SRFT, toc_SRFT);
         end
+        %{
         error_CS_SRRQR = norm(A - A(:, J_CS_SRRQR)*P_CS_SRRQR);
         if verbosity >= 1
             fprintf('CountSketch [SRRQR] matrix ID error: %.10e. Time: %.2f s.\n', error_CS_SRRQR, toc_CS_SRRQR);
         end
+        %}
         error_CS_QR = norm(A - A(:, J_CS_QR)*P_CS_QR);
         if verbosity >= 1
             fprintf('CountSketch [QR] matrix ID error: %.10e. Time: %.2f s.\n', error_CS_QR, toc_SC_QR);
@@ -224,13 +258,13 @@ for tr = 1:no_trials
         save_mat.error(2, cnt) = error_STD;
         save_mat.error(3, cnt) = error_GA;
         save_mat.error(4, cnt) = error_SRFT; 
-        save_mat.error(5, cnt) = error_CS_SRRQR; 
+        %save_mat.error(5, cnt) = error_CS_SRRQR; 
         save_mat.error(6, cnt) = error_CS_QR; 
         save_mat.time(1, cnt) = toc_SVD;
         save_mat.time(2, cnt) = time_STD;
-        save_mat.time(3, cnt) = time_GA;
+        save_mat.time(3, cnt) = toc_GA;
         save_mat.time(4, cnt) = toc_SRFT;
-        save_mat.time(5, cnt) = toc_CS_SRRQR;
+        %save_mat.time(5, cnt) = toc_CS_SRRQR;
         save_mat.time(6, cnt) = toc_SC_QR;
         cnt = cnt + 1;
         if verbosity >= 1
