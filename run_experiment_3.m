@@ -53,15 +53,20 @@
 % verbosity: Controls the verbosity (0 = least verbose, 1 = intermediate 
 %   verbosity, 2 = max verbosity)
 
-K = 1442;
+rng_generator = 'twister'; % twister, combRecursive, v5uniform, v4
+K = 1442; % K = 1442;
+dataset = 'specular';
+
+rng(0, rng_generator)
 L = K + 10;
 SRFT_no_splits = 16;
-norm_type = 'normest';
-no_rand_norm_vec = 10;
+norm_type = 'normrand';
+no_rand_norm_vec = 13;
 normest_tol = 1e-2;
-no_trials = 10;
-filename = '../data/specular.mat';
-results_matlab_file = 'matlab_output_exp_3';
+no_trials = 1;
+filename = ['../../Own texts/Articles/4. randomized-matrix-tensor-id/data/', dataset, '.mat'];
+%results_matlab_file = ['matlab_output_exp_6_', dataset, '_K', num2str(K), '_', rng_generator];
+results_matlab_file = ['matlab_output_exp_6'];
 verbosity = 1;
 
 %% Main loop
