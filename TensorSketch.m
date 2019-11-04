@@ -1,14 +1,11 @@
 function SA = TensorSketch(A, J)
 %TENSORSKETCH Computes the TensorSketch of a matrix Khatri-Rao product
 %
-%   SA = TENSORSKETCH(A, h, s, J) returns the TensorSketch of the
-%   Khatri-Rao product of the matrices in A computed using the hash 
-%   functions in h and s, using a target sketch dimension J. A should be a 
-%   (row or column) cell containing the matrices, h should be a (row or 
-%   column) cell containing hash functions, and s should be a (row or 
-%   column) cell containing sign hash functions. The matrices in A can be
-%   either dense or sparse: The appropriate countSketch function will be
-%   used in each case.
+%   SA = TENSORSKETCH(A, J) returns the TensorSketch of the Khatri-Rao 
+%   product of the matrices in A using a target sketch dimension J. A
+%   should be a (row or column) cell containing the matrices. The matrices 
+%   in A can be either dense or sparse: The appropriate countSketch 
+%   function will be used in each case.
 
 % Author:   Osman Asif Malik
 % Email:    osman.malik@colorado.edu
