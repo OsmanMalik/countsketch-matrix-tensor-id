@@ -1,9 +1,9 @@
-# CountSketch Matrix and Tensor Interpolative Decomposition
-This repository provides the code we use in our preprint paper 
+# Fast randomized matrix and tensor interpolative decomposition using CountSketch
+This repository provides the code we use in our paper 
 
-O. A. Malik and S. Becker. Fast Randomized Matrix and Tensor Interpolative Decomposition Using CountSketch. *CoRR*, abs/1901.10559, 29 January 2019.
+O.A. Malik, S. Becker. *Fast randomized matrix and tensor interpolative decomposition using CountSketch*. **Adv Comput Math** 46, article number: 76, 2020. https://doi.org/10.1007/s10444-020-09816-9
 
-It is available at https://arxiv.org/abs/1901.10559.
+You can also view the paper for free on SharedIt via this link: https://rdcu.be/b9eFU
 
 ## Some further details
 In our paper, we propose a new fast randomized algorithm for interpolative decomposition (ID) of matrices utilizing the CountSketch technique. We then extend our method to the recently proposed tensor ID problem. This repository provides all the code we use in our experiments in the paper, including implementations of our proposed CountSketch matrix and tensor ID algorithms which are provided in the functions **CS_matrix_ID.m** and **CS_tensor_ID.m**, respectively.
@@ -42,12 +42,13 @@ The four script files **run_experiment_n.m** (where n = 1, 2, 3, 4), can be used
 ## Referencing this code
 If you use our code in any of your own work, please reference our paper:
 ```
-@article{Malik-Becker-2019,
+@article{malik-2020-fast-randomized,
   author    = {Osman Asif Malik and Stephen Becker},
-  title     = {Fast Randomized Matrix and Tensor Interpolative Decomposition Using {CountSketch}},
-  journal   = {CoRR},
-  volume    = {abs/1901.10559},
-  year      = {2019},
+  title     = {Fast randomized matrix and tensor interpolative decomposition using {C}ount{S}ketch},
+  journal   = {Advances in Computational Mathematics},
+  volume    = {46},
+  year      = {2020},
+  doi	    = {10.1007/s10444-020-09816-9},
 }
 ```
 
