@@ -10,7 +10,8 @@ In our paper, we propose a new fast randomized algorithm for interpolative decom
 
 ## Requirements
 Parts of our code relies on the following software:
-* Tensor Toolbox version 2.6 by Bader, Kolda and others (available at http://www.sandia.gov/~tgkolda/TensorToolbox/).
+* Tensor Toolbox by Bader, Kolda and others (available at https://www.tensortoolbox.org). 
+We used version 2.6 of Tensor Toolbox in our work, but newer versions should also work fine.
 * RSVDPACK by Voronin and Martinsson (available at https://github.com/sergeyvoronin/LowRankMatrixDecompositionCodes).
 * Interpolative Decomposition based on Strong RRQR by Xin Xing (available at https://www.mathworks.com/matlabcentral/fileexchange/69352-interpolative-decomposition-based-on-strong-rrqr).
 
